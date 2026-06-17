@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico Facial - @sararamosateliedabeleza</title>
+    <style>
+        body { background-color: #050505; color: #D4AF37; font-family: 'Helvetica Neue', Arial, sans-serif; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; margin: 0; min-height: 100vh; justify-content: center; }
+        .painel { border: 1px solid #D4AF37; padding: 30px; border-radius: 8px; width: 100%; max-width: 400px; background-color: #0a0a0a; box-sizing: border-box; }
+        label { font-weight: bold; display: block; margin-top: 15px; }
+        input, button { width: 100%; margin-top: 8px; margin-bottom: 15px; padding: 10px; background-color: #1a1a1a; color: #ffffff; border: 1px solid #333; border-radius: 4px; box-sizing: border-box; }
+        button { background-color: #D4AF37; color: #050505; padding: 15px; border: none; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+        button:hover { background-color: #b5952f; }
+        .btn-link { background: none; color: #888; text-decoration: underline; font-size: 12px; border: none; cursor: pointer; padding: 0; width: auto; margin-bottom: 0; }
+        .resultado-texto { background-color: #1a1a1a; padding: 15px; border-radius: 4px; border-left: 4px solid #D4AF37; text-align: left; margin-bottom: 15px; font-size: 14px; color: #ddd; }
+        .spinner { display: none; width: 30px; height: 30px; border: 4px solid #333; border-top: 4px solid #D4AF37; border-radius: 50%; animation: spin 1s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .dica-foto { font-size: 12px; color: #aaaaaa; margin-top: -5px; margin-bottom: 10px; font-style: italic; line-height: 1.4; }
+        footer { margin-top: 40px; text-align: center; border-top: 1px solid #333; padding-top: 20px; width: 100%; max-width: 400px; }
+        .rodape-logo { max-width: 120px; margin-bottom: 10px; }
+        .rodape-texto { color: #D4AF37; font-size: 12px; margin: 0; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; }
+        
+        /* Telas */
+        #telaLoginDiag { text-align: center; }
+        #telaAppDiag { display: none; width: 100%; max-width: 400px; }
+        .cabecalho-app { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+    <!-- 🔒 TELA DE LOGIN (Porta de Entrada) -->
+    <div id="telaLoginDiag" class="painel">
+        <img src="logo.png" alt="Logo Ateliê" style="max-width: 150px; margin-bottom: 15px;">
+        <h3 style="color: #D4AF37; margin-bottom: 25px; margin-top: 0;">Acesso Restrito</h3>
+        <input type="password" id="senhaInputDiag" placeholder="Digite a senha do sistema..." style="text-align: center; font-size: 16px;">
+        <button id="btnEntrarDiag">Destrancar Diagnóstico</button>
+    </div>
+
+    <!-- 🧬 TELA DO APLICATIVO -->
+    <div id="telaAppDiag">
+        <div class="cabecalho-app">
+            <h2 style="margin: 0; font-size: 22px;">Dossiê Clínico</h2>
+            <button id="btnSairDiag" class="btn-link">Sair (Lock)</button>
+        </div>
+
+        <div class="painel">
+            <label>Nome da Cliente:</label>
+            <input type="text" id="nomeClienteDiag" placeholder="Ex: Maria Silva...">
+
+            <label>Foto do Rosto:</label>
+            <p class="dica-foto"><strong>Instruções:</strong> Rosto frontal iluminado, sem sorrir, cabelo preso, sem óculos.</p>
+            <input type="file" id="fotoDiag" accept="image/*">
+
+            <button id="btnAnalisar">Analisar e Salvar no CRM</button>
+            <div id="loadingDiag" class="spinner"></div>
+            
+            <div id="resultadoDiag" style="display: none; margin-top: 20px;">
+                <h3 style="color: #D4AF37; text-align: center;">Resultado Biométrico:</h3>
+                <div class="resultado-texto"><strong>Formato:</strong> <span id="resFormato"></span></div>
+                <div class="resultado-texto"><strong>Temperamento:</strong> <span id="resTemperamento"></span></div>
+                <div class="resultado-texto"><strong>Explicação:</strong> <span id="resExplicacao"></span></div>
+            </div>
+        </div>
+
+        <footer>
+            <img src="logo.png" alt="Logo Ateliê" class="rodape-logo">
+            <p class="rodape-texto">Legado Visagista<br>Ateliê Sara Ramos</p>
+        </footer>
+    </div>
+
+    <script>
+    // Controle de Telas e Senha
+    const telaLoginDiag = document.getElementById('telaLoginDiag');
+    const telaAppDiag = document.getElementById('telaAppDiag');
+    const senhaInputDiag = document.getElementById('senhaInputDiag');
+
+    function destrancarAppDiag() {
+        telaLoginDiag.style.display = 'none';
+        telaAppDiag.style.display = 'block';
+    }
+
+    function trancarAppDiag() {
+        localStorage.removeItem('senha_atelie_diag');
+        senhaInputDiag.value = '';
+        telaAppDiag.style.display = 'none';
+        telaLoginDiag.style.display = 'block';
+        document.getElementById('resultadoDiag').style.display = 'none';
+    }
+
+    // Verifica se já estava logado
+    if (localStorage.getItem('senha_atelie_diag')) {
+        destrancarAppDiag();
+    }
+
+    document.getElementById('btnEntrarDiag').addEventListener('click', () => {
+        if (!senhaInputDiag.value) return alert("Digite a senha para entrar.");
+        localStorage.setItem('senha_atelie_diag', senhaInputDiag.value);
+        destrancarAppDiag();
+    });
+
+    document.getElementById('btnSairDiag').addEventListener('click', trancarAppDiag);
+
+    // Funções do App
+    document.getElementById('btnAnalisar').addEventListener('click', async () => {
+        const btn = document.getElementById('btnAnalisar');
+        const spinner = document.getElementById('loadingDiag');
+        const fileInput = document.getElementById('fotoDiag');
+        const resultadoDiag = document.getElementById('resultadoDiag');
+        const nome = document.getElementById('nomeClienteDiag').value;
+        
+        let senha = localStorage.getItem('senha_atelie_diag');
+
+        if (fileInput.files.length === 0) return alert("Selecione uma foto.");
+
+        spinner.style.display = 'block';
+        resultadoDiag.style.display = 'none';
+        btn.disabled = true;
+
+        try {
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            
+            reader.onloadend = async () => {
+                const base64String = reader.result.split(',')[1];
+                
+                // ⚠️ COLE A URL DO SEU SERVIDOR DE DIAGNÓSTICO ABAIXO
+                const urlDiagnostico = 'https://diagnostico-p10h.onrender.com';
+
+                const response = await fetch(urlDiagnostico, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${senha}` 
+                    },
+                    body: JSON.stringify({ imagemBase64: base64String, mimeType: file.type, nomeCliente: nome })
+                });
+
+                if(response.status === 401) {
+                    trancarAppDiag();
+                    spinner.style.display = 'none';
+                    btn.disabled = false;
+                    return alert("Acesso Negado: A senha que você digitou está incorreta.");
+                }
+
+                const data = await response.json();
+                
+                if(data.diagnostico) {
+                    document.getElementById('resFormato').innerText = data.diagnostico.formato;
+                    document.getElementById('resTemperamento').innerText = data.diagnostico.temperamento_base;
+                    document.getElementById('resExplicacao').innerText = data.diagnostico.explicacao;
+                    resultadoDiag.style.display = 'block';
+                } else {
+                    alert("Erro ao processar diagnóstico.");
+                }
+                
+                spinner.style.display = 'none';
+                btn.disabled = false;
+            };
+            
+            reader.readAsDataURL(file);
+
+        } catch (error) {
+            alert("Falha na conexão. Verifique sua internet.");
+            spinner.style.display = 'none';
+            btn.disabled = false;
+        }
+    });
+    </script>
+</body>
+</html>
