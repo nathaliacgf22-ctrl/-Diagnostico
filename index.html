@@ -93,14 +93,16 @@
         .btn-pdf { background: transparent; color: #fff; border: 1px solid #fff; }
         .btn-pdf:hover { background: rgba(255, 255, 255, 0.1); }
 
+        /* 🛑 O SEGREDO DO CSS: Animação corrigida para não quebrar o PDF */
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         .resultado-bloco { 
             background: rgba(255, 255, 255, 0.02); padding: 25px 30px; border-radius: 8px; border-left: 2px solid var(--gold); text-align: left; margin-bottom: 20px; page-break-inside: avoid;
-            opacity: 0; animation: fadeUp 0.6s ease forwards;
+            /* Modificado para backwards: resolve o bug de captura do html2canvas */
+            animation: fadeUp 0.8s ease backwards; 
         }
         
         .resultado-bloco:nth-child(2) { animation-delay: 0.1s; }
@@ -108,13 +110,6 @@
         .resultado-bloco:nth-child(4) { animation-delay: 0.3s; }
         .resultado-bloco:nth-child(5) { animation-delay: 0.4s; }
         .resultado-bloco:nth-child(6) { animation-delay: 0.5s; }
-
-        /* 🛑 CORREÇÃO DO PDF: Esta classe desliga a animação no momento de tirar a "foto" */
-        .modo-impressao .resultado-bloco {
-            animation: none !important;
-            opacity: 1 !important;
-            transform: none !important;
-        }
 
         .resultado-bloco h4 { margin: 0 0 12px 0; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); }
         .resultado-bloco p { margin: 0; font-size: 14.5px; color: #d0d0d0; line-height: 1.8; font-weight: 300; }
@@ -218,13 +213,18 @@
     </div>
 
     <script>
-    // 🛑 GERAÇÃO DE PDF BLINDADA 
+    // 🛑 BLINDAGEM MÁXIMA PARA O GERADOR DE PDF
     document.getElementById('btnSalvarPDF').addEventListener('click', () => {
         const elemento = document.getElementById('areaPdf');
         const nomeCliente = document.getElementById('nomeClienteDiag').value || "Cliente";
         
-        // Aplica a classe que cancela a invisibilidade da animação
-        elemento.classList.add('modo-impressao');
+        // FORÇA BRUTA: Injeta uma ordem no CSS desligando a invisibilidade em todos os blocos
+        const blocos = elemento.querySelectorAll('.resultado-bloco');
+        blocos.forEach(bloco => {
+            bloco.style.animation = 'none';
+            bloco.style.opacity = '1';
+            bloco.style.transform = 'none';
+        });
 
         const opt = {
             margin:       0.3,
@@ -235,13 +235,17 @@
         };
 
         const btn = document.getElementById('btnSalvarPDF');
-        btn.innerText = "Gerando PDF..."; btn.disabled = true;
+        btn.innerText = "Gerando PDF..."; 
+        btn.disabled = true;
 
-        html2pdf().set(opt).from(elemento).save().then(() => {
-            btn.innerText = "Exportar PDF"; btn.disabled = false;
-            // Remove a classe para a animação voltar ao normal na tela
-            elemento.classList.remove('modo-impressao');
-        });
+        // O 'setTimeout' dá 0.3 segundos para a placa de vídeo do seu dispositivo 
+        // processar a remoção da animação e desenhar as letras antes de bater a fotografia
+        setTimeout(() => {
+            html2pdf().set(opt).from(elemento).save().then(() => {
+                btn.innerText = "Exportar PDF"; 
+                btn.disabled = false;
+            });
+        }, 300);
     });
 
     document.getElementById('fotoDiag').addEventListener('change', function() {
@@ -296,7 +300,7 @@
                     canvas.getContext('2d').drawImage(img, 0, 0, w, h);
                     resolve(canvas.toDataURL('image/jpeg', 0.85).split(',')[1]); 
                 };
-                img.onerror = () => reject("Erro ao carregar a imagem.");
+                img.onerror = () => reject("Erro ao carregar a imagem na memória.");
             };
             reader.onerror = () => reject("Erro na leitura do arquivo.");
         });
@@ -344,7 +348,6 @@
             const data = await res.json();
             const diag = data.diagnostico;
             
-            // A chave calibracao_metrica_inicial corre em oculto no servidor, preenchemos as visíveis:
             document.getElementById('resTercos').innerText = diag.analise_tercos || "N/A";
             document.getElementById('resGeometria').innerText = diag.geometria_linhas || "N/A";
             document.getElementById('resFormato').innerText = diag.formato_final || "N/A";
