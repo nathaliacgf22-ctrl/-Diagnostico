@@ -5,10 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dossiê Visagista - @sararamosateliedabeleza</title>
     
-    <!-- Tipografia -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-    
-    <!-- Biblioteca Geração de PDF (html2pdf) -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Alex+Brush&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <style>
@@ -35,20 +32,45 @@
             justify-content: center; 
         }
 
-        /* 👑 ENGENHARIA DE LOGO DEFINITIVA: Muito maior e fundo 100% invisível */
-        .logo-app {
-            max-width: 260px; /* Logo BEM maior */
-            margin: 0 auto 30px auto;
-            display: block;
-            /* Screen força o fundo escuro a sumir completamente, deixando só o que é claro */
-            mix-blend-mode: screen; 
-            /* Aumenta o contraste para o dourado ficar vivo e aceso */
-            filter: contrast(1.8) brightness(1.2) drop-shadow(0 0 15px rgba(212, 175, 55, 0.2));
+        .logo-nativa {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 40px;
+            text-align: center;
+            user-select: none;
         }
 
-        /* Reduz um pouco o tamanho da logo quando estiver dentro do painel do app */
-        #telaAppDiag .logo-app {
-            max-width: 190px;
+        .logo-icone {
+            font-size: 55px; 
+            color: var(--gold);
+            margin-bottom: 5px;
+            line-height: 1;
+            text-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
+        }
+
+        .logo-titulo {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            color: var(--gold);
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .logo-subtitulo {
+            font-family: 'Alex Brush', cursive; 
+            font-size: 28px;
+            color: #d0d0d0;
+            margin-top: -8px;
+            letter-spacing: 1px;
+            font-weight: 300;
+        }
+
+        #telaAppDiag .logo-nativa {
+            transform: scale(0.85); 
+            margin-bottom: 25px;
         }
 
         .painel { 
@@ -192,7 +214,6 @@
         
         .btn-pdf:hover { background: rgba(255, 255, 255, 0.1); transform: none; }
 
-        /* FORMATAÇÃO DO DOSSIÊ */
         .resultado-bloco { 
             background: rgba(255, 255, 255, 0.03); 
             padding: 25px 30px; 
@@ -250,15 +271,23 @@
 <body>
 
     <div id="telaLoginDiag" class="painel">
-        <!-- Logo na tela de Login bem grande e luminosa -->
-        <img src="logo.png" alt="Ateliê Sara Ramos" class="logo-app">
+        <div class="logo-nativa">
+            <div class="logo-icone">⚜️</div>
+            <h1 class="logo-titulo">Legado Visagista</h1>
+            <span class="logo-subtitulo">A Assinatura da Arte</span>
+        </div>
+        
         <h3 style="margin-bottom: 40px; font-size: 20px; text-transform: uppercase; letter-spacing: 3px;">Acesso Restrito</h3>
         <input type="password" id="senhaInputDiag" placeholder="Chave de Segurança" style="text-align: center;">
         <button id="btnEntrarDiag">Autenticar</button>
     </div>
 
     <div id="telaAppDiag">
-        <img src="logo.png" alt="Ateliê Sara Ramos" class="logo-app">
+        <div class="logo-nativa">
+            <div class="logo-icone">⚜️</div>
+            <h1 class="logo-titulo">Legado Visagista</h1>
+            <span class="logo-subtitulo">A Assinatura da Arte</span>
+        </div>
         
         <div class="painel">
             <div class="cabecalho-app">
@@ -277,10 +306,10 @@
             </div>
             <p class="dica-foto">Para precisão máxima: Rosto frontal, iluminado, sem sorrir e com os cabelos presos.</p>
 
-            <button id="btnAnalisar">Gerar Laudo Visagista</button>
+            <button id="btnAnalisar">Gerar Laudo Morfológico</button>
             
             <div id="loadingDiag" class="spinner"></div>
-            <div id="statusProcessamento" class="status-pulse">Analisando arquitetura facial...</div>
+            <div id="statusProcessamento" class="status-pulse">Realizando cálculos estéticos...</div>
             
             <div id="resultadoDiag" style="display: none; margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.05);">
                 
@@ -298,9 +327,8 @@
                     </div>
 
                     <div class="resultado-bloco">
-                        <h4>III. Identidade Visual</h4>
+                        <h4>III. Identidade Estrutural</h4>
                         <p><strong>Formato Geométrico:</strong> <span id="resFormato" style="color: #fff;"></span></p>
-                        <p style="margin-top: 10px;"><strong>Temperamento Base:</strong> <span id="resTemperamento" style="color: #fff;"></span></p>
                     </div>
 
                     <div class="resultado-bloco">
@@ -447,7 +475,7 @@
         statusTexto.style.display = 'block';
         resultadoDiag.style.display = 'none';
         btn.disabled = true;
-        btn.innerText = "Analisando Arquitetura Facial...";
+        btn.innerText = "Avaliando Harmonia Facial...";
         btn.style.opacity = "0.6";
 
         try {
@@ -484,7 +512,6 @@
                 document.getElementById('resTercos').innerText = diag.analise_tercos || "Não identificado.";
                 document.getElementById('resGeometria').innerText = diag.geometria_linhas || "Não identificado.";
                 document.getElementById('resFormato').innerText = diag.formato_final || "Não identificado.";
-                document.getElementById('resTemperamento').innerText = diag.temperamento_base || "Não identificado.";
                 document.getElementById('resCompensacao').innerText = diag.lei_compensacao || "Não identificado.";
                 document.getElementById('resEngenharia').innerText = diag.engenharia_corte_cor || "Não identificado.";
                 
@@ -509,7 +536,7 @@
             spinner.style.display = 'none';
             statusTexto.style.display = 'none';
             btn.disabled = false;
-            btn.innerText = "Gerar Laudo Visagista";
+            btn.innerText = "Gerar Laudo Morfológico";
             btn.style.opacity = "1";
         }
     });
