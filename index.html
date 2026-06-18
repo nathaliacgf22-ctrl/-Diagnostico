@@ -6,7 +6,10 @@
     <title>Legado Visagista | Dossiê Clínico</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Alex+Brush&display=swap" rel="stylesheet">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
     
     <style>
         :root {
@@ -36,28 +39,14 @@
             min-height: 100vh; 
         }
 
-        .logo-container {
-            display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 40px;
-        }
-        .logo-imagem {
-            max-width: 220px;
-            margin-bottom: -10px;
-            filter: drop-shadow(0px 10px 15px rgba(212, 175, 55, 0.2));
-            transition: transform 0.5s ease;
-        }
+        .logo-container { display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 40px; }
+        .logo-imagem { max-width: 220px; margin-bottom: -10px; filter: drop-shadow(0px 10px 15px rgba(212, 175, 55, 0.2)); transition: transform 0.5s ease; }
         .logo-imagem:hover { transform: scale(1.03); }
 
         .painel { 
-            background: rgba(15, 15, 15, 0.65); 
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(212, 175, 55, 0.15); 
-            padding: 45px 40px; 
-            border-radius: 16px; 
-            width: 100%; 
-            max-width: 650px; 
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05); 
-            box-sizing: border-box; 
+            background: rgba(15, 15, 15, 0.65); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.15); padding: 45px 40px; border-radius: 16px; width: 100%; max-width: 650px; 
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05); box-sizing: border-box; 
         }
 
         h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--gold); font-weight: 400; letter-spacing: 1px; margin: 0; }
@@ -78,7 +67,6 @@
             position: relative; overflow: hidden; width: 100%; background: linear-gradient(135deg, #D4AF37 0%, #a88720 100%); color: #050505; padding: 18px; border: none; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; margin-top: 25px; transition: all 0.4s ease; box-shadow: 0 10px 20px rgba(212, 175, 55, 0.15);
         }
         .btn-primario:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(212, 175, 55, 0.3); }
-        
         .btn-primario::after {
             content: ''; position: absolute; top: -50%; left: -100%; width: 50%; height: 200%;
             background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
@@ -93,31 +81,35 @@
         .btn-pdf { background: transparent; color: #fff; border: 1px solid #fff; }
         .btn-pdf:hover { background: rgba(255, 255, 255, 0.1); }
 
-        /* 🛑 O SEGREDO DO CSS: Animação corrigida para não quebrar o PDF */
-        @keyframes fadeUp {
-            0% { opacity: 0; transform: translateY(30px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
         .resultado-bloco { 
             background: rgba(255, 255, 255, 0.02); padding: 25px 30px; border-radius: 8px; border-left: 2px solid var(--gold); text-align: left; margin-bottom: 20px; page-break-inside: avoid;
-            /* Modificado para backwards: resolve o bug de captura do html2canvas */
             animation: fadeUp 0.8s ease backwards; 
         }
-        
-        .resultado-bloco:nth-child(2) { animation-delay: 0.1s; }
-        .resultado-bloco:nth-child(3) { animation-delay: 0.2s; }
-        .resultado-bloco:nth-child(4) { animation-delay: 0.3s; }
-        .resultado-bloco:nth-child(5) { animation-delay: 0.4s; }
-        .resultado-bloco:nth-child(6) { animation-delay: 0.5s; }
+        .resultado-bloco:nth-child(3) { animation-delay: 0.1s; }
+        .resultado-bloco:nth-child(4) { animation-delay: 0.2s; }
+        .resultado-bloco:nth-child(5) { animation-delay: 0.3s; }
+        .resultado-bloco:nth-child(6) { animation-delay: 0.4s; }
+        .resultado-bloco:nth-child(7) { animation-delay: 0.5s; }
 
         .resultado-bloco h4 { margin: 0 0 12px 0; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); }
         .resultado-bloco p { margin: 0; font-size: 14.5px; color: #d0d0d0; line-height: 1.8; font-weight: 300; }
         .resultado-bloco p strong { color: var(--gold); font-weight: 500; }
 
+        /* MOLDURA DO MAPA TOPOGRÁFICO */
+        .wrapper-biometria {
+            display: flex; justify-content: center; margin: 25px 0; width: 100%; page-break-inside: avoid;
+            animation: fadeUp 0.8s ease backwards;
+        }
+        .container-canvas {
+            position: relative; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7); max-width: 100%;
+        }
+        #canvasMalha { display: block; max-width: 100%; height: auto; }
+
         .spinner { display: none; width: 35px; height: 35px; border: 2px solid rgba(212, 175, 55, 0.1); border-top: 2px solid var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin: 35px auto 20px auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
         .status-pulse { font-size: 12px; color: var(--gold); text-align: center; margin-top: 10px; display: none; font-weight: 400; letter-spacing: 1px; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
         
@@ -137,7 +129,6 @@
         <div class="logo-container">
             <img src="logo.png" alt="Legado Visagista" class="logo-imagem">
         </div>
-        
         <h3 style="margin-bottom: 40px; font-size: 18px; text-transform: uppercase; letter-spacing: 3px;">Acesso Restrito</h3>
         <input type="password" id="senhaInputDiag" placeholder="Chave de Segurança" style="text-align: center;">
         <button id="btnEntrarDiag" class="btn-primario">Autenticar Sessão</button>
@@ -151,7 +142,7 @@
         <div class="painel">
             <div class="cabecalho-app">
                 <h2 style="font-size: 16px; text-transform: uppercase; letter-spacing: 2px;">Dossiê Clínico</h2>
-                <span id="btnSairDiag" style="color: #666; font-size: 11px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;">Desconectar</span>
+                <span id="btnSairDiag" style="color: #666; font-size: 11px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;">Desconectar</span>
             </div>
 
             <label>Identificação da Cliente</label>
@@ -168,12 +159,18 @@
             <button id="btnAnalisar" class="btn-primario">Gerar Diagnóstico Estrutural</button>
             
             <div id="loadingDiag" class="spinner"></div>
-            <div id="statusProcessamento" class="status-pulse">Processando geometria e cálculos...</div>
+            <div id="statusProcessamento" class="status-pulse">Iniciando Varredura e Mapeamento Topográfico...</div>
             
             <div id="resultadoDiag" style="display: none; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.05);">
                 <div id="areaPdf">
                     <h3 style="text-align: center; margin-bottom: 35px; margin-top: 20px; font-size: 18px; text-transform: uppercase; letter-spacing: 2px; color: #D4AF37;">Prescrição Visagista</h3>
                     
+                    <div class="wrapper-biometria">
+                        <div class="container-canvas">
+                            <canvas id="canvasMalha"></canvas>
+                        </div>
+                    </div>
+
                     <div class="resultado-bloco">
                         <h4>I. Proporções Anatômicas</h4>
                         <p id="resTercos"></p>
@@ -200,7 +197,7 @@
                     </div>
                 </div>
 
-                <div class="botoes-acao" id="containerBotoes">
+                <div class="botoes-acao">
                     <button id="btnSalvarPDF" class="btn-pdf">Exportar PDF</button>
                     <button onclick="window.location.reload()" class="btn-secundario">Novo Atendimento</button>
                 </div>
@@ -212,19 +209,35 @@
         </footer>
     </div>
 
+    <img id="imgAuxiliar" style="display: none;" alt="Auxiliar">
+
     <script>
-    // 🛑 BLINDAGEM MÁXIMA PARA O GERADOR DE PDF
+    // Configuração do Inicializador Local do FaceMesh
+    const faceMesh = new FaceMesh({locateFile: (file) => {
+        return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
+    }});
+    
+    faceMesh.setOptions({
+        maxNumFaces: 1,
+        refineLandmarks: true,
+        minDetectionConfidence: 0.5,
+        minTrackingConfidence: 0.5
+    });
+
+    // Captura global do resultado do mapa facial para desenho em tempo de execução
+    let resultadoLandmarksGlobais = null;
+
+    faceMesh.onResults(results => {
+        resultadoLandmarksGlobais = results;
+    });
+
+    // Exportação do laudo premium para PDF
     document.getElementById('btnSalvarPDF').addEventListener('click', () => {
         const elemento = document.getElementById('areaPdf');
         const nomeCliente = document.getElementById('nomeClienteDiag').value || "Cliente";
         
-        // FORÇA BRUTA: Injeta uma ordem no CSS desligando a invisibilidade em todos os blocos
-        const blocos = elemento.querySelectorAll('.resultado-bloco');
-        blocos.forEach(bloco => {
-            bloco.style.animation = 'none';
-            bloco.style.opacity = '1';
-            bloco.style.transform = 'none';
-        });
+        const blocos = elemento.querySelectorAll('.resultado-bloco, .wrapper-biometria');
+        blocos.forEach(b => { b.style.animation = 'none'; b.style.opacity = '1'; b.style.transform = 'none'; });
 
         const opt = {
             margin:       0.3,
@@ -235,15 +248,11 @@
         };
 
         const btn = document.getElementById('btnSalvarPDF');
-        btn.innerText = "Gerando PDF..."; 
-        btn.disabled = true;
+        btn.innerText = "Gerando PDF..."; btn.disabled = true;
 
-        // O 'setTimeout' dá 0.3 segundos para a placa de vídeo do seu dispositivo 
-        // processar a remoção da animação e desenhar as letras antes de bater a fotografia
         setTimeout(() => {
             html2pdf().set(opt).from(elemento).save().then(() => {
-                btn.innerText = "Exportar PDF"; 
-                btn.disabled = false;
+                btn.innerText = "Exportar PDF"; btn.disabled = false;
             });
         }, 300);
     });
@@ -274,44 +283,60 @@
         window.location.reload();
     });
 
-    function processarImagem(file) {
-        return new Promise((resolve, reject) => {
-            if (!file) return reject("Nenhum arquivo encontrado.");
+    // Execução da renderização da malha dourada sobre a foto original
+    function renderizarMalhaDourada(imgElemento) {
+        const canvas = document.getElementById('canvasMalha');
+        const ctx = canvas.getContext('2d');
+
+        // Limita a proporção máxima para não quebrar a memória do dispositivo
+        const MAX_DIM = 700;
+        let largura = imgElemento.naturalWidth;
+        let altura = imgElemento.naturalHeight;
+
+        if (largura > altura) {
+            if (largura > MAX_DIM) { altura *= MAX_DIM / largura; largura = MAX_DIM; }
+        } else {
+            if (altura > MAX_DIM) { largura *= MAX_DIM / altura; altura = MAX_DIM; }
+        }
+
+        canvas.width = largura;
+        canvas.height = altura;
+
+        // Desenha o plano de fundo com a foto original da cliente
+        ctx.drawImage(imgElemento, 0, 0, largura, altura);
+
+        if (resultadoLandmarksGlobais && resultadoLandmarksGlobais.multiFaceLandmarks.length > 0) {
+            const pontos = resultadoLandmarksGlobais.multiFaceLandmarks[0];
+
+            // Injeta a estilização dourada nos conectores de tesselação facial
+            window.drawConnectors(ctx, pontos, window.FACEMESH_TESSELATION, {
+                color: '#D4AF37',
+                lineWidth: 0.4
+            });
+
+            // Desenha os contornos principais do crânio com maior força de linha
+            window.drawConnectors(ctx, pontos, window.FACEMESH_CONTOURS, {
+                color: '#D4AF37',
+                lineWidth: 0.9
+            });
             
-            if (file.size <= 1.5 * 1024 * 1024) {
-                const reader = new FileReader();
-                reader.onload = e => resolve(e.target.result.split(',')[1]);
-                reader.onerror = e => reject(e);
-                reader.readAsDataURL(file);
-                return;
-            }
-            
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = e => {
-                const img = new Image(); 
-                img.src = e.target.result;
-                img.onload = () => {
-                    const MAX = 1200; let w = img.width; let h = img.height;
-                    if (w > h) { if (w > MAX) { h *= MAX / w; w = MAX; } } 
-                    else { if (h > MAX) { w *= MAX / h; h = MAX; } }
-                    const canvas = document.createElement('canvas');
-                    canvas.width = w; canvas.height = h;
-                    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                    resolve(canvas.toDataURL('image/jpeg', 0.85).split(',')[1]); 
-                };
-                img.onerror = () => reject("Erro ao carregar a imagem na memória.");
-            };
-            reader.onerror = () => reject("Erro na leitura do arquivo.");
-        });
+            // Adiciona pontos de ouro nas extremidades anatómicas para o acabamento de alta performance
+            window.drawLandmarks(ctx, pontos, {
+                color: '#D4AF37',
+                numLandmarks: 1,
+                radius: 0.6
+            });
+        }
     }
 
+    // Ação Principal do Sistema
     document.getElementById('btnAnalisar').addEventListener('click', async () => {
         const btn = document.getElementById('btnAnalisar');
         const spinner = document.getElementById('loadingDiag');
         const statusTexto = document.getElementById('statusProcessamento');
         const fileInput = document.getElementById('fotoDiag');
         const resultDiv = document.getElementById('resultadoDiag');
+        const imgAux = document.getElementById('imgAuxiliar');
         
         const nome = document.getElementById('nomeClienteDiag').value;
         const senha = localStorage.getItem('senha_atelie_diag');
@@ -323,7 +348,30 @@
         btn.disabled = true; btn.innerText = "Processando Biometria..."; btn.style.opacity = "0.6";
 
         try {
-            const base64String = await processarImagem(fileInput.files[0]);
+            const arquivo = fileInput.files[0];
+            
+            // Carrega e converte a imagem localmente para processamento da malha virtual
+            const lerImagemBase64 = () => new Promise((res) => {
+                const reader = new FileReader();
+                reader.onload = e => res(e.target.result);
+                reader.readAsDataURL(arquivo);
+            });
+
+            const dataUrlString = await lerImagemBase64();
+            
+            // Monta o elemento de imagem para a varredura do FaceMesh
+            await new Promise((resolve) => {
+                imgAux.src = dataUrlString;
+                imgAux.onload = () => resolve();
+            });
+
+            // 1. DISPARA A VARREDURA DA MALHA LOCALMENTE
+            statusTexto.innerText = "Calculando eixos de simetria facial...";
+            await faceMesh.send({ image: imgAux });
+
+            // 2. DISPARA A LEITURA COGNITIVA NO SERVIDOR
+            statusTexto.innerText = "Consultando Matriz Geométrica (Gemini 3.1 Pro)...";
+            const base64Limpa = dataUrlString.split(',')[1];
 
             const res = await fetch('https://diagnostico-p10h.onrender.com/api/diagnostico', {
                 method: 'POST',
@@ -331,7 +379,7 @@
                     'Content-Type': 'application/json', 
                     'Authorization': `Bearer ${senha}` 
                 },
-                body: JSON.stringify({ imagemBase64: base64String, mimeType: 'image/jpeg', nomeCliente: nome })
+                body: JSON.stringify({ imagemBase64: base64Limpa, mimeType: 'image/jpeg', nomeCliente: nome })
             });
 
             if(res.status === 401) { 
@@ -348,6 +396,10 @@
             const data = await res.json();
             const diag = data.diagnostico;
             
+            // Transfere o desenho gerado pelo mapeamento para o canvas visível do PDF
+            renderizarMalhaDourada(imgAux);
+
+            // Alimenta os blocos do laudo estrutural
             document.getElementById('resTercos').innerText = diag.analise_tercos || "N/A";
             document.getElementById('resGeometria').innerText = diag.geometria_linhas || "N/A";
             document.getElementById('resFormato').innerText = diag.formato_final || "N/A";
