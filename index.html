@@ -19,8 +19,14 @@
 
         html { scroll-behavior: smooth; }
 
+        /* SCROLLBAR DE LUXO */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
         body { 
-            background: var(--bg-dark); 
+            background: radial-gradient(circle at top, #111 0%, var(--bg-dark) 80%);
             color: var(--text-light); 
             font-family: 'Montserrat', sans-serif; 
             display: flex; 
@@ -31,16 +37,30 @@
             min-height: 100vh; 
         }
 
-        /* LOGO NATIVA */
-        .logo-nativa {
-            display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 40px; user-select: none;
+        /* LOGO COM IMAGEM TRANSPARENTE */
+        .logo-container {
+            display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 40px;
         }
-        .logo-icone { font-size: 60px; color: var(--gold); margin-bottom: 5px; line-height: 1; text-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
-        .logo-titulo { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--gold); letter-spacing: 6px; text-transform: uppercase; margin: 0; font-weight: 400; }
-        .logo-subtitulo { font-family: 'Alex Brush', cursive; font-size: 28px; color: #d0d0d0; margin-top: -8px; letter-spacing: 1px; font-weight: 300; }
+        .logo-imagem {
+            max-width: 220px; /* Tamanho majestoso */
+            margin-bottom: -10px;
+            filter: drop-shadow(0px 10px 15px rgba(212, 175, 55, 0.2)); /* Sombra dourada projetada */
+            transition: transform 0.5s ease;
+        }
+        .logo-imagem:hover { transform: scale(1.03); }
 
+        /* PAINEL GLASSMORPHISM (Efeito Vidro Fumê) */
         .painel { 
-            background: #0a0a0a; border: 1px solid rgba(212, 175, 55, 0.2); padding: 45px 40px; border-radius: 12px; width: 100%; max-width: 650px; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6); box-sizing: border-box; 
+            background: rgba(15, 15, 15, 0.65); 
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.15); 
+            padding: 45px 40px; 
+            border-radius: 16px; 
+            width: 100%; 
+            max-width: 650px; 
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05); 
+            box-sizing: border-box; 
         }
 
         h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--gold); font-weight: 400; letter-spacing: 1px; margin: 0; }
@@ -50,32 +70,56 @@
         input[type="text"], input[type="password"] { 
             width: 100%; margin-top: 5px; padding: 12px 0; background-color: transparent; color: #fff; border: none; border-bottom: 1px solid var(--gold-dim); font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 300; box-sizing: border-box; transition: all 0.4s ease; outline: none;
         }
-        input[type="text"]:focus, input[type="password"]:focus { border-bottom: 1px solid var(--gold); }
+        input[type="text"]:focus, input[type="password"]:focus { border-bottom: 1px solid var(--gold); box-shadow: 0 1px 0 0 var(--gold); }
 
         .upload-container { margin-top: 15px; margin-bottom: 25px; }
         .custom-file-upload { display: flex; align-items: center; justify-content: center; padding: 20px; border: 1px dashed var(--gold-dim); border-radius: 8px; cursor: pointer; color: var(--gold); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; transition: all 0.3s; background-color: rgba(212, 175, 55, 0.02); }
         .custom-file-upload:hover { background-color: rgba(212, 175, 55, 0.08); border-style: solid; }
         .file-name { font-size: 11px; color: #666; margin-top: 10px; text-align: center; font-style: italic; }
 
-        button { 
-            width: 100%; background: linear-gradient(135deg, #D4AF37 0%, #a88720 100%); color: #050505; padding: 18px; border: none; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-weight: 500; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; margin-top: 25px; transition: all 0.4s ease; box-shadow: 0 10px 20px rgba(212, 175, 55, 0.15);
+        /* BOTÃO COM EFEITO SHIMMER (Reflexo de Luz) */
+        .btn-primario { 
+            position: relative; overflow: hidden; width: 100%; background: linear-gradient(135deg, #D4AF37 0%, #a88720 100%); color: #050505; padding: 18px; border: none; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; margin-top: 25px; transition: all 0.4s ease; box-shadow: 0 10px 20px rgba(212, 175, 55, 0.15);
         }
-        button:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(212, 175, 55, 0.25); }
+        .btn-primario:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(212, 175, 55, 0.3); }
+        
+        .btn-primario::after {
+            content: ''; position: absolute; top: -50%; left: -100%; width: 50%; height: 200%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+            transform: rotate(25deg); animation: shimmer 4s infinite;
+        }
+        @keyframes shimmer { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
 
         .botoes-acao { display: flex; gap: 15px; margin-top: 35px; }
-        .btn-secundario { background: transparent; color: var(--gold); border: 1px solid var(--gold); margin-top: 0; box-shadow: none; }
-        .btn-secundario:hover { background: rgba(212, 175, 55, 0.05); transform: none; box-shadow: none;}
-        .btn-pdf { background: transparent; color: #fff; border: 1px solid #fff; margin-top: 0; box-shadow: none;}
-        .btn-pdf:hover { background: rgba(255, 255, 255, 0.1); transform: none; box-shadow: none;}
+        .btn-secundario, .btn-pdf { width: 100%; padding: 18px; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.3s ease; }
+        .btn-secundario { background: transparent; color: var(--gold); border: 1px solid var(--gold); }
+        .btn-secundario:hover { background: rgba(212, 175, 55, 0.08); }
+        .btn-pdf { background: transparent; color: #fff; border: 1px solid #fff; }
+        .btn-pdf:hover { background: rgba(255, 255, 255, 0.1); }
+
+        /* ANIMAÇÃO EM CASCATA DOS RESULTADOS */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
         .resultado-bloco { 
             background: rgba(255, 255, 255, 0.02); padding: 25px 30px; border-radius: 8px; border-left: 2px solid var(--gold); text-align: left; margin-bottom: 20px; page-break-inside: avoid;
+            opacity: 0; animation: fadeUp 0.6s ease forwards;
         }
+        
+        /* Atraso em cada bloco para o efeito cascata */
+        .resultado-bloco:nth-child(2) { animation-delay: 0.1s; }
+        .resultado-bloco:nth-child(3) { animation-delay: 0.2s; }
+        .resultado-bloco:nth-child(4) { animation-delay: 0.3s; }
+        .resultado-bloco:nth-child(5) { animation-delay: 0.4s; }
+        .resultado-bloco:nth-child(6) { animation-delay: 0.5s; }
+
         .resultado-bloco h4 { margin: 0 0 12px 0; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); }
         .resultado-bloco p { margin: 0; font-size: 14.5px; color: #d0d0d0; line-height: 1.8; font-weight: 300; }
         .resultado-bloco p strong { color: var(--gold); font-weight: 500; }
 
-        .spinner { display: none; width: 30px; height: 30px; border: 2px solid rgba(212, 175, 55, 0.1); border-top: 2px solid var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin: 35px auto 20px auto; }
+        .spinner { display: none; width: 35px; height: 35px; border: 2px solid rgba(212, 175, 55, 0.1); border-top: 2px solid var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin: 35px auto 20px auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
         .status-pulse { font-size: 12px; color: var(--gold); text-align: center; margin-top: 10px; display: none; font-weight: 400; letter-spacing: 1px; animation: pulse 2s infinite; }
@@ -84,39 +128,34 @@
         #telaLoginDiag { text-align: center; padding: 50px 40px; }
         #telaAppDiag { display: none; width: 100%; max-width: 650px; }
         .cabecalho-app { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);}
-        #areaPdf { padding: 20px; background: #0a0a0a; border-radius: 12px; }
+        #areaPdf { padding: 20px; background: rgba(10, 10, 10, 0.9); border-radius: 12px; }
         
         footer { margin-top: 60px; text-align: center; opacity: 0.8; }
-        .rodape-texto { color: #666; font-size: 10px; margin: 0; letter-spacing: 4px; text-transform: uppercase; font-weight: 300; }
-        .rodape-destaque { color: var(--gold); font-weight: 400; display: block; margin-top: 8px; letter-spacing: 2px;}
+        .rodape-texto { color: #555; font-size: 10px; margin: 0; letter-spacing: 4px; text-transform: uppercase; font-weight: 300; }
+        .rodape-destaque { color: var(--gold-dim); font-weight: 400; display: block; margin-top: 8px; letter-spacing: 2px;}
     </style>
 </head>
 <body>
 
-    <!-- TELA DE LOGIN -->
     <div id="telaLoginDiag" class="painel">
-        <div class="logo-nativa">
-            <div class="logo-icone">⚜️</div>
-            <h1 class="logo-titulo">Legado Visagista</h1>
-            <span class="logo-subtitulo">A Assinatura da Arte</span>
+        <div class="logo-container">
+            <img src="logo.png" alt="Legado Visagista" class="logo-imagem">
         </div>
         
         <h3 style="margin-bottom: 40px; font-size: 18px; text-transform: uppercase; letter-spacing: 3px;">Acesso Restrito</h3>
         <input type="password" id="senhaInputDiag" placeholder="Chave de Segurança" style="text-align: center;">
-        <button id="btnEntrarDiag">Autenticar Sessão</button>
+        <button id="btnEntrarDiag" class="btn-primario">Autenticar Sessão</button>
     </div>
 
-    <!-- TELA PRINCIPAL DO APP -->
     <div id="telaAppDiag">
-        <div class="logo-nativa" style="transform: scale(0.8); margin-bottom: 20px;">
-            <div class="logo-icone">⚜️</div>
-            <h1 class="logo-titulo">Legado Visagista</h1>
+        <div class="logo-container" style="transform: scale(0.85); margin-bottom: 10px;">
+            <img src="logo.png" alt="Legado Visagista" class="logo-imagem">
         </div>
         
         <div class="painel">
             <div class="cabecalho-app">
                 <h2 style="font-size: 16px; text-transform: uppercase; letter-spacing: 2px;">Dossiê Clínico</h2>
-                <span id="btnSairDiag" style="color: #666; font-size: 11px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;">Desconectar</span>
+                <span id="btnSairDiag" style="color: #666; font-size: 11px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;">Desconectar</span>
             </div>
 
             <label>Identificação da Cliente</label>
@@ -130,12 +169,11 @@
             </div>
             <p style="font-size: 11px; color: #555; margin-top: 8px; line-height: 1.5; font-weight: 300;">Para precisão máxima: Rosto frontal, iluminado, sem sorrir e com os cabelos presos.</p>
 
-            <button id="btnAnalisar">Gerar Diagnóstico Estrutural</button>
+            <button id="btnAnalisar" class="btn-primario">Gerar Diagnóstico Estrutural</button>
             
             <div id="loadingDiag" class="spinner"></div>
             <div id="statusProcessamento" class="status-pulse">Processando geometria e cálculos...</div>
             
-            <!-- RESULTADO E EXPORTAÇÃO PDF -->
             <div id="resultadoDiag" style="display: none; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.05);">
                 <div id="areaPdf">
                     <h3 style="text-align: center; margin-bottom: 35px; margin-top: 20px; font-size: 18px; text-transform: uppercase; letter-spacing: 2px;">Prescrição Visagista</h3>
@@ -179,7 +217,7 @@
     </div>
 
     <script>
-    // Gerador de PDF
+    // Gerador de PDF Premium
     document.getElementById('btnSalvarPDF').addEventListener('click', () => {
         const elemento = document.getElementById('areaPdf');
         const nomeCliente = document.getElementById('nomeClienteDiag').value || "Cliente";
@@ -187,7 +225,7 @@
         const opt = {
             margin:       0.5,
             filename:     `Dossie_Visagista_${nomeCliente.replace(/\s+/g, '_')}.pdf`,
-            image:        { type: 'jpeg', quality: 0.98 },
+            image:        { type: 'jpeg', quality: 1 },
             html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#0a0a0a' },
             jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
         };
@@ -227,19 +265,24 @@
         window.location.reload();
     });
 
-    // Compressor de Imagem Front-end (Evita travamentos de envio)
+    // Compressor de Imagem Front-end
     function processarImagem(file) {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
+            if (!file) return reject("Nenhum arquivo encontrado.");
+            
             if (file.size <= 1.5 * 1024 * 1024) {
                 const reader = new FileReader();
                 reader.onload = e => resolve(e.target.result.split(',')[1]);
+                reader.onerror = e => reject(e);
                 reader.readAsDataURL(file);
                 return;
             }
+            
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = e => {
-                const img = new Image(); img.src = e.target.result;
+                const img = new Image(); 
+                img.src = e.target.result;
                 img.onload = () => {
                     const MAX = 1200; let w = img.width; let h = img.height;
                     if (w > h) { if (w > MAX) { h *= MAX / w; w = MAX; } } 
@@ -249,7 +292,9 @@
                     canvas.getContext('2d').drawImage(img, 0, 0, w, h);
                     resolve(canvas.toDataURL('image/jpeg', 0.85).split(',')[1]); 
                 };
+                img.onerror = () => reject("Erro ao carregar a imagem na memória.");
             };
+            reader.onerror = () => reject("Erro na leitura do arquivo.");
         });
     }
 
@@ -273,14 +318,23 @@
         try {
             const base64String = await processarImagem(fileInput.files[0]);
 
-            // Chamada para o NOVO motor Gemini do Backend
             const res = await fetch('https://diagnostico-p10h.onrender.com/api/diagnostico', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${senha}` },
-                body: JSON.stringify({ imagemBase64: base64String, mimeType: fileInput.files[0].type, nomeCliente: nome })
+                headers: { 
+                    'Content-Type': 'application/json', 
+                    'Authorization': `Bearer ${senha}` 
+                },
+                body: JSON.stringify({ 
+                    imagemBase64: base64String, 
+                    mimeType: 'image/jpeg', 
+                    nomeCliente: nome 
+                })
             });
 
-            if(res.status === 401) { localStorage.removeItem('senha_atelie_diag'); window.location.reload(); }
+            if(res.status === 401) { 
+                localStorage.removeItem('senha_atelie_diag'); 
+                window.location.reload(); 
+            }
             if (!res.ok) throw new Error("Instabilidade na comunicação com o servidor.");
 
             const data = await res.json();
@@ -296,7 +350,7 @@
             setTimeout(() => { resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300);
 
         } catch (error) {
-            alert("Erro Clínico: " + error.message);
+            alert("Aviso do Sistema: " + error.message);
         } finally {
             spinner.style.display = 'none'; statusTexto.style.display = 'none';
             btn.disabled = false; btn.innerText = "Gerar Diagnóstico Estrutural"; btn.style.opacity = "1";
