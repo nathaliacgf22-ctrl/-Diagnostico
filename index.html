@@ -334,8 +334,14 @@
             if(res.status === 401) { 
                 localStorage.removeItem('senha_atelie_diag'); 
                 window.location.reload(); 
+                return;
             }
-            if (!res.ok) throw new Error("Instabilidade na comunicação com o servidor.");
+
+            // 🕵️‍♀️ O RAIO-X: Se der erro, ele lê a resposta do servidor!
+            if (!res.ok) {
+                const erroServidor = await res.json();
+                throw new Error(erroServidor.erro || "Falha desconhecida no servidor.");
+            }
 
             const data = await res.json();
             const diag = data.diagnostico;
@@ -350,7 +356,8 @@
             setTimeout(() => { resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300);
 
         } catch (error) {
-            alert("Aviso do Sistema: " + error.message);
+            // AGORA SIM ELE MOSTRA O ERRO REAL NA TELA
+            alert(error.message);
         } finally {
             spinner.style.display = 'none'; statusTexto.style.display = 'none';
             btn.disabled = false; btn.innerText = "Gerar Diagnóstico Estrutural"; btn.style.opacity = "1";
