@@ -35,14 +35,20 @@
             justify-content: center; 
         }
 
-        /* 👑 NOVA ENGENHARIA DE LOGO: Efeito "Lighten" para sumir com o fundo azul escuro */
+        /* 👑 ENGENHARIA DE LOGO DEFINITIVA: Muito maior e fundo 100% invisível */
         .logo-app {
-            max-width: 170px;
+            max-width: 260px; /* Logo BEM maior */
             margin: 0 auto 30px auto;
             display: block;
-            mix-blend-mode: lighten; /* Faz tudo que for escuro desaparecer no fundo do app */
-            -webkit-mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 75%);
-            mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 75%);
+            /* Screen força o fundo escuro a sumir completamente, deixando só o que é claro */
+            mix-blend-mode: screen; 
+            /* Aumenta o contraste para o dourado ficar vivo e aceso */
+            filter: contrast(1.8) brightness(1.2) drop-shadow(0 0 15px rgba(212, 175, 55, 0.2));
+        }
+
+        /* Reduz um pouco o tamanho da logo quando estiver dentro do painel do app */
+        #telaAppDiag .logo-app {
+            max-width: 190px;
         }
 
         .painel { 
@@ -51,7 +57,7 @@
             padding: 45px 40px; 
             border-radius: 12px; 
             width: 100%; 
-            max-width: 600px; /* Alargado levemente para caber o PDF bonito */
+            max-width: 600px; 
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
             box-sizing: border-box; 
         }
@@ -194,7 +200,7 @@
             border-left: 2px solid var(--gold); 
             text-align: left; 
             margin-bottom: 20px;
-            page-break-inside: avoid; /* Evita que o bloco quebre no meio do PDF */
+            page-break-inside: avoid;
         }
 
         .resultado-bloco h4 { 
@@ -238,13 +244,13 @@
         }
         @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
 
-        /* ID Para exportar o PDF de forma limpa */
         #areaPdf { padding: 20px; background: #0a0a0a; border-radius: 12px; }
     </style>
 </head>
 <body>
 
     <div id="telaLoginDiag" class="painel">
+        <!-- Logo na tela de Login bem grande e luminosa -->
         <img src="logo.png" alt="Ateliê Sara Ramos" class="logo-app">
         <h3 style="margin-bottom: 40px; font-size: 20px; text-transform: uppercase; letter-spacing: 3px;">Acesso Restrito</h3>
         <input type="password" id="senhaInputDiag" placeholder="Chave de Segurança" style="text-align: center;">
@@ -252,7 +258,7 @@
     </div>
 
     <div id="telaAppDiag">
-        <img src="logo.png" alt="Ateliê Sara Ramos" class="logo-app" style="max-width: 130px;">
+        <img src="logo.png" alt="Ateliê Sara Ramos" class="logo-app">
         
         <div class="painel">
             <div class="cabecalho-app">
@@ -274,12 +280,11 @@
             <button id="btnAnalisar">Gerar Laudo Visagista</button>
             
             <div id="loadingDiag" class="spinner"></div>
-            <div id="statusProcessamento" class="status-pulse">Realizando cálculos biométricos...</div>
+            <div id="statusProcessamento" class="status-pulse">Analisando arquitetura facial...</div>
             
-            <!-- ÁREA DE DOSSIÊ E EXPORTAÇÃO PDF -->
             <div id="resultadoDiag" style="display: none; margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.05);">
                 
-                <div id="areaPdf"> <!-- Envelopado para o PDF pegar apenas o conteúdo limpo -->
+                <div id="areaPdf">
                     <h3 style="text-align: center; margin-bottom: 35px; margin-top: 20px; font-size: 20px; text-transform: uppercase; letter-spacing: 2px;">Prescrição Clínica</h3>
                     
                     <div class="resultado-bloco">
@@ -322,21 +327,18 @@
     </div>
 
     <script>
-    // Gerador de PDF Mágico
     document.getElementById('btnSalvarPDF').addEventListener('click', () => {
         const elemento = document.getElementById('areaPdf');
         const nomeCliente = document.getElementById('nomeClienteDiag').value || "Cliente";
         
-        // Configurações do PDF Premium
         const opt = {
             margin:       0.5,
             filename:     `Dossie_Visagista_${nomeCliente.replace(/\s+/g, '_')}.pdf`,
             image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#0a0a0a' }, // Fundo escuro realçado
+            html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#0a0a0a' },
             jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
         };
 
-        // Troca o texto do botão pra avisar que está baixando
         const btn = document.getElementById('btnSalvarPDF');
         btn.innerText = "Gerando PDF...";
         btn.disabled = true;
@@ -347,7 +349,6 @@
         });
     });
 
-    // Código Padrão de Interface e Envio (Igual ao Anterior)
     document.getElementById('fotoDiag').addEventListener('change', function() {
         const nomeArquivo = this.files[0] ? this.files[0].name : 'Nenhuma imagem selecionada';
         document.getElementById('fileName').textContent = nomeArquivo;
@@ -446,13 +447,11 @@
         statusTexto.style.display = 'block';
         resultadoDiag.style.display = 'none';
         btn.disabled = true;
-        btn.innerText = "Mapeando Pixels Faciais...";
+        btn.innerText = "Analisando Arquitetura Facial...";
         btn.style.opacity = "0.6";
 
         try {
             const base64String = await processarImagemParaIA(file);
-            
-            statusTexto.innerText = "Calculando métricas visagistas...";
 
             const urlDiagnostico = 'https://diagnostico-p10h.onrender.com/api/diagnostico';
 
@@ -509,7 +508,6 @@
         function resetUI() {
             spinner.style.display = 'none';
             statusTexto.style.display = 'none';
-            statusTexto.innerText = "Realizando cálculos biométricos...";
             btn.disabled = false;
             btn.innerText = "Gerar Laudo Visagista";
             btn.style.opacity = "1";
