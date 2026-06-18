@@ -19,7 +19,6 @@
 
         html { scroll-behavior: smooth; }
 
-        /* SCROLLBAR DE LUXO */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg-dark); }
         ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 10px; }
@@ -37,19 +36,17 @@
             min-height: 100vh; 
         }
 
-        /* LOGO COM IMAGEM TRANSPARENTE */
         .logo-container {
             display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 40px;
         }
         .logo-imagem {
-            max-width: 220px; /* Tamanho majestoso */
+            max-width: 220px;
             margin-bottom: -10px;
-            filter: drop-shadow(0px 10px 15px rgba(212, 175, 55, 0.2)); /* Sombra dourada projetada */
+            filter: drop-shadow(0px 10px 15px rgba(212, 175, 55, 0.2));
             transition: transform 0.5s ease;
         }
         .logo-imagem:hover { transform: scale(1.03); }
 
-        /* PAINEL GLASSMORPHISM (Efeito Vidro Fumê) */
         .painel { 
             background: rgba(15, 15, 15, 0.65); 
             backdrop-filter: blur(20px);
@@ -77,7 +74,6 @@
         .custom-file-upload:hover { background-color: rgba(212, 175, 55, 0.08); border-style: solid; }
         .file-name { font-size: 11px; color: #666; margin-top: 10px; text-align: center; font-style: italic; }
 
-        /* BOTÃO COM EFEITO SHIMMER (Reflexo de Luz) */
         .btn-primario { 
             position: relative; overflow: hidden; width: 100%; background: linear-gradient(135deg, #D4AF37 0%, #a88720 100%); color: #050505; padding: 18px; border: none; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; margin-top: 25px; transition: all 0.4s ease; box-shadow: 0 10px 20px rgba(212, 175, 55, 0.15);
         }
@@ -97,7 +93,6 @@
         .btn-pdf { background: transparent; color: #fff; border: 1px solid #fff; }
         .btn-pdf:hover { background: rgba(255, 255, 255, 0.1); }
 
-        /* ANIMAÇÃO EM CASCATA DOS RESULTADOS */
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
@@ -108,12 +103,18 @@
             opacity: 0; animation: fadeUp 0.6s ease forwards;
         }
         
-        /* Atraso em cada bloco para o efeito cascata */
         .resultado-bloco:nth-child(2) { animation-delay: 0.1s; }
         .resultado-bloco:nth-child(3) { animation-delay: 0.2s; }
         .resultado-bloco:nth-child(4) { animation-delay: 0.3s; }
         .resultado-bloco:nth-child(5) { animation-delay: 0.4s; }
         .resultado-bloco:nth-child(6) { animation-delay: 0.5s; }
+
+        /* 🛑 CORREÇÃO DO PDF: Esta classe desliga a animação no momento de tirar a "foto" */
+        .modo-impressao .resultado-bloco {
+            animation: none !important;
+            opacity: 1 !important;
+            transform: none !important;
+        }
 
         .resultado-bloco h4 { margin: 0 0 12px 0; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); }
         .resultado-bloco p { margin: 0; font-size: 14.5px; color: #d0d0d0; line-height: 1.8; font-weight: 300; }
@@ -128,7 +129,7 @@
         #telaLoginDiag { text-align: center; padding: 50px 40px; }
         #telaAppDiag { display: none; width: 100%; max-width: 650px; }
         .cabecalho-app { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);}
-        #areaPdf { padding: 20px; background: rgba(10, 10, 10, 0.9); border-radius: 12px; }
+        #areaPdf { padding: 30px; background: #0a0a0a; border-radius: 12px; }
         
         footer { margin-top: 60px; text-align: center; opacity: 0.8; }
         .rodape-texto { color: #555; font-size: 10px; margin: 0; letter-spacing: 4px; text-transform: uppercase; font-weight: 300; }
@@ -176,7 +177,7 @@
             
             <div id="resultadoDiag" style="display: none; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.05);">
                 <div id="areaPdf">
-                    <h3 style="text-align: center; margin-bottom: 35px; margin-top: 20px; font-size: 18px; text-transform: uppercase; letter-spacing: 2px;">Prescrição Visagista</h3>
+                    <h3 style="text-align: center; margin-bottom: 35px; margin-top: 20px; font-size: 18px; text-transform: uppercase; letter-spacing: 2px; color: #D4AF37;">Prescrição Visagista</h3>
                     
                     <div class="resultado-bloco">
                         <h4>I. Proporções Anatômicas</h4>
@@ -217,13 +218,16 @@
     </div>
 
     <script>
-    // Gerador de PDF Premium
+    // 🛑 GERAÇÃO DE PDF BLINDADA 
     document.getElementById('btnSalvarPDF').addEventListener('click', () => {
         const elemento = document.getElementById('areaPdf');
         const nomeCliente = document.getElementById('nomeClienteDiag').value || "Cliente";
         
+        // Aplica a classe que cancela a invisibilidade da animação
+        elemento.classList.add('modo-impressao');
+
         const opt = {
-            margin:       0.5,
+            margin:       0.3,
             filename:     `Dossie_Visagista_${nomeCliente.replace(/\s+/g, '_')}.pdf`,
             image:        { type: 'jpeg', quality: 1 },
             html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#0a0a0a' },
@@ -235,10 +239,11 @@
 
         html2pdf().set(opt).from(elemento).save().then(() => {
             btn.innerText = "Exportar PDF"; btn.disabled = false;
+            // Remove a classe para a animação voltar ao normal na tela
+            elemento.classList.remove('modo-impressao');
         });
     });
 
-    // Controle de Arquivo e Login
     document.getElementById('fotoDiag').addEventListener('change', function() {
         document.getElementById('fileName').textContent = this.files[0] ? this.files[0].name : 'Nenhuma imagem selecionada';
     });
@@ -265,7 +270,6 @@
         window.location.reload();
     });
 
-    // Compressor de Imagem Front-end
     function processarImagem(file) {
         return new Promise((resolve, reject) => {
             if (!file) return reject("Nenhum arquivo encontrado.");
@@ -292,13 +296,12 @@
                     canvas.getContext('2d').drawImage(img, 0, 0, w, h);
                     resolve(canvas.toDataURL('image/jpeg', 0.85).split(',')[1]); 
                 };
-                img.onerror = () => reject("Erro ao carregar a imagem na memória.");
+                img.onerror = () => reject("Erro ao carregar a imagem.");
             };
             reader.onerror = () => reject("Erro na leitura do arquivo.");
         });
     }
 
-    // Ação Principal
     document.getElementById('btnAnalisar').addEventListener('click', async () => {
         const btn = document.getElementById('btnAnalisar');
         const spinner = document.getElementById('loadingDiag');
@@ -324,11 +327,7 @@
                     'Content-Type': 'application/json', 
                     'Authorization': `Bearer ${senha}` 
                 },
-                body: JSON.stringify({ 
-                    imagemBase64: base64String, 
-                    mimeType: 'image/jpeg', 
-                    nomeCliente: nome 
-                })
+                body: JSON.stringify({ imagemBase64: base64String, mimeType: 'image/jpeg', nomeCliente: nome })
             });
 
             if(res.status === 401) { 
@@ -337,7 +336,6 @@
                 return;
             }
 
-            // 🕵️‍♀️ O RAIO-X: Se der erro, ele lê a resposta do servidor!
             if (!res.ok) {
                 const erroServidor = await res.json();
                 throw new Error(erroServidor.erro || "Falha desconhecida no servidor.");
@@ -346,6 +344,7 @@
             const data = await res.json();
             const diag = data.diagnostico;
             
+            // A chave calibracao_metrica_inicial corre em oculto no servidor, preenchemos as visíveis:
             document.getElementById('resTercos').innerText = diag.analise_tercos || "N/A";
             document.getElementById('resGeometria').innerText = diag.geometria_linhas || "N/A";
             document.getElementById('resFormato').innerText = diag.formato_final || "N/A";
@@ -356,7 +355,6 @@
             setTimeout(() => { resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300);
 
         } catch (error) {
-            // AGORA SIM ELE MOSTRA O ERRO REAL NA TELA
             alert(error.message);
         } finally {
             spinner.style.display = 'none'; statusTexto.style.display = 'none';
