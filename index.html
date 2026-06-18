@@ -2,544 +2,83 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dossiê Visagista - @sararamosateliedabeleza</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Alex+Brush&display=swap" rel="stylesheet">
+    <title>Legado Visagista | Diagnóstico de Alta Precisão</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    
     <style>
-        :root {
-            --bg-dark: #050505;
-            --gold: #D4AF37;
-            --gold-dim: rgba(212, 175, 55, 0.4);
-            --text-light: #f5f5f5;
-            --text-muted: #888888;
-        }
-
-        html { scroll-behavior: smooth; }
-
-        body { 
-            background: #050505;
-            color: var(--text-light); 
-            font-family: 'Montserrat', sans-serif; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            padding: 50px 20px; 
-            margin: 0; 
-            min-height: 100vh; 
-            justify-content: center; 
-        }
-
-        .logo-nativa {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 40px;
-            text-align: center;
-            user-select: none;
-        }
-
-        .logo-icone {
-            font-size: 55px; 
-            color: var(--gold);
-            margin-bottom: 5px;
-            line-height: 1;
-            text-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
-        }
-
-        .logo-titulo {
-            font-family: 'Playfair Display', serif;
-            font-size: 26px;
-            color: var(--gold);
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            margin: 0;
-            font-weight: 400;
-        }
-
-        .logo-subtitulo {
-            font-family: 'Alex Brush', cursive; 
-            font-size: 28px;
-            color: #d0d0d0;
-            margin-top: -8px;
-            letter-spacing: 1px;
-            font-weight: 300;
-        }
-
-        #telaAppDiag .logo-nativa {
-            transform: scale(0.85); 
-            margin-bottom: 25px;
-        }
-
-        .painel { 
-            background: #0a0a0a; 
-            border: 1px solid rgba(212, 175, 55, 0.15); 
-            padding: 45px 40px; 
-            border-radius: 12px; 
-            width: 100%; 
-            max-width: 600px; 
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-            box-sizing: border-box; 
-        }
-
-        h2, h3, h4 {
-            font-family: 'Playfair Display', serif;
-            color: var(--gold);
-            font-weight: 400;
-            letter-spacing: 1px;
-            margin: 0;
-        }
-
-        label { 
-            font-size: 11px;
-            font-weight: 500; 
-            display: block; 
-            margin-top: 30px; 
-            color: var(--text-muted); 
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        input[type="text"], input[type="password"] { 
-            width: 100%; 
-            margin-top: 5px; 
-            padding: 10px 0; 
-            background-color: transparent; 
-            color: #fff; 
-            border: none;
-            border-bottom: 1px solid var(--gold-dim); 
-            font-family: 'Montserrat', sans-serif;
-            font-size: 16px;
-            font-weight: 300;
-            box-sizing: border-box; 
-            transition: all 0.4s ease;
-            outline: none;
-        }
-
-        input[type="text"]:focus, input[type="password"]:focus {
-            border-bottom: 1px solid var(--gold);
-        }
-
-        .upload-container {
-            margin-top: 15px;
-            margin-bottom: 30px;
-        }
+        body { background: #050505; color: #fff; font-family: 'Montserrat', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; }
         
-        .custom-file-upload {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 18px;
-            border: 1px dashed var(--gold-dim);
-            border-radius: 8px;
-            cursor: pointer;
-            color: var(--gold);
-            font-size: 13px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            transition: all 0.3s;
-            background-color: rgba(212, 175, 55, 0.02);
-        }
+        /* LOGO NATIVA */
+        .logo-box { text-align: center; margin-bottom: 50px; }
+        .logo-icone { font-size: 80px; color: #D4AF37; }
+        .logo-titulo { font-family: 'Playfair Display', serif; font-size: 35px; color: #D4AF37; letter-spacing: 6px; text-transform: uppercase; }
 
-        .custom-file-upload:hover {
-            background-color: rgba(212, 175, 55, 0.08);
-            border-style: solid;
-        }
-
-        .file-name {
-            font-size: 11px;
-            color: #666;
-            margin-top: 10px;
-            text-align: center;
-            font-style: italic;
-        }
-
-        button { 
-            width: 100%; 
-            background: linear-gradient(135deg, #D4AF37 0%, #a88720 100%);
-            color: #050505; 
-            padding: 18px; 
-            border: none; 
-            border-radius: 6px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 500; 
-            font-size: 13px; 
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer; 
-            margin-top: 25px; 
-            transition: all 0.4s ease; 
-        }
-
-        button:hover { transform: translateY(-2px); }
-
-        .btn-link { 
-            background: none; 
-            color: var(--text-muted); 
-            font-size: 11px; 
-            border: none; 
-            cursor: pointer; 
-            padding: 0; 
-            margin: 0; 
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: none;
-        }
-
-        .btn-link:hover { color: var(--gold); transform: none; }
-
-        .botoes-acao {
-            display: flex;
-            gap: 15px;
-            margin-top: 35px;
-        }
-
-        .btn-secundario { 
-            background: transparent; 
-            color: var(--gold); 
-            border: 1px solid var(--gold); 
-            margin-top: 0; 
-        }
-
-        .btn-secundario:hover { background: rgba(212, 175, 55, 0.05); transform: none; }
+        .painel { background: #0a0a0a; border: 1px solid #222; padding: 40px; border-radius: 8px; width: 100%; max-width: 600px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        input { width: 100%; background: none; border: none; border-bottom: 1px solid #333; color: #fff; padding: 12px 0; font-size: 16px; }
+        button { width: 100%; padding: 18px; background: #D4AF37; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; margin-top: 30px; transition: 0.3s; }
+        button:hover { background: #b5952f; }
         
-        .btn-pdf {
-            background: transparent;
-            color: #fff;
-            border: 1px solid #fff;
-            margin-top: 0;
-        }
+        /* DOSSIÊ ESTILO PDF */
+        .resultado-bloco { margin-bottom: 25px; border-bottom: 1px solid #222; padding-bottom: 15px; }
+        .resultado-bloco h4 { color: #D4AF37; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; }
+        .resultado-bloco p { font-size: 15px; line-height: 1.6; color: #ccc; }
         
-        .btn-pdf:hover { background: rgba(255, 255, 255, 0.1); transform: none; }
-
-        .resultado-bloco { 
-            background: rgba(255, 255, 255, 0.03); 
-            padding: 25px 30px; 
-            border-radius: 8px;
-            border-left: 2px solid var(--gold); 
-            text-align: left; 
-            margin-bottom: 20px;
-            page-break-inside: avoid;
-        }
-
-        .resultado-bloco h4 { 
-            margin: 0 0 12px 0; 
-            font-size: 14px; 
-            text-transform: uppercase; 
-            letter-spacing: 2px;
-        }
-
-        .resultado-bloco p { 
-            margin: 0; 
-            font-size: 14px; 
-            color: #d0d0d0; 
-            line-height: 1.8; 
-            font-weight: 300;
-        }
-        
-        .resultado-bloco p strong { color: var(--gold); font-weight: 500; }
-
-        .spinner { 
-            display: none; width: 30px; height: 30px; border: 2px solid rgba(212, 175, 55, 0.1); 
-            border-top: 2px solid var(--gold); border-radius: 50%; animation: spin 1s linear infinite; 
-            margin: 35px auto 20px auto; 
-        }
-
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        .dica-foto { font-size: 11px; color: #555; margin-top: 8px; line-height: 1.5; font-weight: 300; }
-        
-        footer { margin-top: 60px; text-align: center; width: 100%; max-width: 500px; opacity: 0.8; }
-        .rodape-texto { color: #666; font-size: 10px; margin: 0; letter-spacing: 4px; text-transform: uppercase; font-weight: 300; }
-        .rodape-destaque { color: var(--gold); font-weight: 400; display: block; margin-top: 8px; letter-spacing: 2px;}
-        
-        #telaLoginDiag { text-align: center; padding: 60px 40px; }
-        #telaAppDiag { display: none; width: 100%; max-width: 600px; }
-        .cabecalho-app { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);}
-        
-        .status-pulse {
-            font-size: 12px; color: var(--gold); text-align: center; margin-top: 10px;
-            display: none; font-weight: 400; letter-spacing: 1px; animation: pulse 2s infinite;
-        }
-        @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
-
-        #areaPdf { padding: 20px; background: #0a0a0a; border-radius: 12px; }
+        #pdf-btn { background: #fff; color: #000; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <div id="telaLoginDiag" class="painel">
-        <div class="logo-nativa">
-            <div class="logo-icone">⚜️</div>
-            <h1 class="logo-titulo">Legado Visagista</h1>
-            <span class="logo-subtitulo">A Assinatura da Arte</span>
-        </div>
-        
-        <h3 style="margin-bottom: 40px; font-size: 20px; text-transform: uppercase; letter-spacing: 3px;">Acesso Restrito</h3>
-        <input type="password" id="senhaInputDiag" placeholder="Chave de Segurança" style="text-align: center;">
-        <button id="btnEntrarDiag">Autenticar</button>
+    <div class="logo-box">
+        <div class="logo-icone">⚜️</div>
+        <h1 class="logo-titulo">Legado Visagista</h1>
     </div>
 
-    <div id="telaAppDiag">
-        <div class="logo-nativa">
-            <div class="logo-icone">⚜️</div>
-            <h1 class="logo-titulo">Legado Visagista</h1>
-            <span class="logo-subtitulo">A Assinatura da Arte</span>
+    <div id="app" class="painel">
+        <input type="text" id="nome" placeholder="Identificação da Cliente">
+        <input type="file" id="foto" accept="image/*" style="margin-top:20px;">
+        <button id="btn">Iniciar Diagnóstico Clínico</button>
+
+        <div id="resultado" style="display:none; margin-top:40px;">
+            <div id="areaPdf">
+                <h2 style="text-align:center; color:#D4AF37; font-family:'Playfair Display'; margin-bottom:30px;">Dossiê de Análise</h2>
+                <div class="resultado-bloco"><h4>Proporções Anatômicas</h4><p id="t1"></p></div>
+                <div class="resultado-bloco"><h4>Análise Geométrica</h4><p id="t2"></p></div>
+                <div class="resultado-bloco"><h4>Formato do Rosto</h4><p id="t3"></p></div>
+                <div class="resultado-bloco"><h4>Lei da Compensação</h4><p id="t4"></p></div>
+                <div class="resultado-bloco"><h4>Engenharia de Corte & Cor</h4><p id="t5"></p></div>
+            </div>
+            <button id="pdf-btn">Exportar Dossiê (PDF)</button>
         </div>
-        
-        <div class="painel">
-            <div class="cabecalho-app">
-                <h2 style="font-size: 18px; text-transform: uppercase; letter-spacing: 2px;">Dossiê Clínico</h2>
-                <button id="btnSairDiag" class="btn-link">Desconectar</button>
-            </div>
-
-            <label>Identificação da Cliente</label>
-            <input type="text" id="nomeClienteDiag" placeholder="Ex: Maria Silva">
-
-            <label>Mapeamento Facial</label>
-            <div class="upload-container">
-                <label for="fotoDiag" class="custom-file-upload">+ Anexar Fotografia</label>
-                <input type="file" id="fotoDiag" accept="image/*" style="display: none;">
-                <div id="fileName" class="file-name">Nenhuma imagem selecionada</div>
-            </div>
-            <p class="dica-foto">Para precisão máxima: Rosto frontal, iluminado, sem sorrir e com os cabelos presos.</p>
-
-            <button id="btnAnalisar">Gerar Laudo Morfológico</button>
-            
-            <div id="loadingDiag" class="spinner"></div>
-            <div id="statusProcessamento" class="status-pulse">Realizando cálculos estéticos...</div>
-            
-            <div id="resultadoDiag" style="display: none; margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.05);">
-                
-                <div id="areaPdf">
-                    <h3 style="text-align: center; margin-bottom: 35px; margin-top: 20px; font-size: 20px; text-transform: uppercase; letter-spacing: 2px;">Prescrição Clínica</h3>
-                    
-                    <div class="resultado-bloco">
-                        <h4>I. Proporções Anatômicas</h4>
-                        <p id="resTercos"></p>
-                    </div>
-                    
-                    <div class="resultado-bloco">
-                        <h4>II. Geometria e Linhas</h4>
-                        <p id="resGeometria"></p>
-                    </div>
-
-                    <div class="resultado-bloco">
-                        <h4>III. Identidade Estrutural</h4>
-                        <p><strong>Formato Geométrico:</strong> <span id="resFormato" style="color: #fff;"></span></p>
-                    </div>
-
-                    <div class="resultado-bloco">
-                        <h4>IV. Lei da Compensação</h4>
-                        <p id="resCompensacao"></p>
-                    </div>
-
-                    <div class="resultado-bloco">
-                        <h4>V. Engenharia Estratégica</h4>
-                        <p id="resEngenharia"></p>
-                    </div>
-                </div>
-
-                <div class="botoes-acao" id="containerBotoes">
-                    <button id="btnSalvarPDF" class="btn-pdf">Salvar PDF</button>
-                    <button onclick="window.location.reload()" class="btn-secundario">Novo Atendimento</button>
-                </div>
-            </div>
-        </div>
-
-        <footer>
-            <p class="rodape-texto">Sistema de Inteligência Visagista<span class="rodape-destaque">Ateliê Sara Ramos</span></p>
-        </footer>
     </div>
 
     <script>
-    document.getElementById('btnSalvarPDF').addEventListener('click', () => {
-        const elemento = document.getElementById('areaPdf');
-        const nomeCliente = document.getElementById('nomeClienteDiag').value || "Cliente";
-        
-        const opt = {
-            margin:       0.5,
-            filename:     `Dossie_Visagista_${nomeCliente.replace(/\s+/g, '_')}.pdf`,
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#0a0a0a' },
-            jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-        };
-
-        const btn = document.getElementById('btnSalvarPDF');
-        btn.innerText = "Gerando PDF...";
-        btn.disabled = true;
-
-        html2pdf().set(opt).from(elemento).save().then(() => {
-            btn.innerText = "Salvar PDF";
-            btn.disabled = false;
-        });
-    });
-
-    document.getElementById('fotoDiag').addEventListener('change', function() {
-        const nomeArquivo = this.files[0] ? this.files[0].name : 'Nenhuma imagem selecionada';
-        document.getElementById('fileName').textContent = nomeArquivo;
-    });
-
-    const telaLoginDiag = document.getElementById('telaLoginDiag');
-    const telaAppDiag = document.getElementById('telaAppDiag');
-    const senhaInputDiag = document.getElementById('senhaInputDiag');
-
-    function destrancarAppDiag() {
-        telaLoginDiag.style.display = 'none';
-        telaAppDiag.style.display = 'block';
-    }
-
-    function trancarAppDiag() {
-        localStorage.removeItem('senha_atelie_diag');
-        senhaInputDiag.value = '';
-        telaAppDiag.style.display = 'none';
-        telaLoginDiag.style.display = 'block';
-        document.getElementById('resultadoDiag').style.display = 'none';
-        document.getElementById('fotoDiag').value = '';
-        document.getElementById('fileName').textContent = 'Nenhuma imagem selecionada';
-        window.scrollTo(0, 0);
-    }
-
-    if (localStorage.getItem('senha_atelie_diag')) {
-        destrancarAppDiag();
-    }
-
-    document.getElementById('btnEntrarDiag').addEventListener('click', () => {
-        if (!senhaInputDiag.value) return alert("Por favor, insira a chave de segurança.");
-        localStorage.setItem('senha_atelie_diag', senhaInputDiag.value);
-        destrancarAppDiag();
-    });
-
-    document.getElementById('btnSairDiag').addEventListener('click', trancarAppDiag);
-
-    function processarImagemParaIA(file) {
-        return new Promise((resolve, reject) => {
-            if (file.size <= 2 * 1024 * 1024) {
-                const readerOriginal = new FileReader();
-                readerOriginal.onload = (e) => resolve(e.target.result.split(',')[1]);
-                readerOriginal.onerror = (err) => reject(err);
-                readerOriginal.readAsDataURL(file);
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = (event) => {
-                const img = new Image();
-                img.src = event.target.result;
-                img.onload = () => {
-                    const MAX_WIDTH = 1500;
-                    const MAX_HEIGHT = 1500;
-                    let width = img.width;
-                    let height = img.height;
-
-                    if (width > height) {
-                        if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
-                    } else {
-                        if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
-                    }
-                    
-                    const canvas = document.createElement('canvas');
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-                    
-                    const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
-                    resolve(dataUrl.split(',')[1]); 
-                };
-                img.onerror = (err) => reject(err);
-            };
-            reader.onerror = (err) => reject(err);
-        });
-    }
-
-    document.getElementById('btnAnalisar').addEventListener('click', async () => {
-        const btn = document.getElementById('btnAnalisar');
-        const spinner = document.getElementById('loadingDiag');
-        const statusTexto = document.getElementById('statusProcessamento');
-        const fileInput = document.getElementById('fotoDiag');
-        const resultadoDiag = document.getElementById('resultadoDiag');
-        
-        const nome = document.getElementById('nomeClienteDiag').value;
-        let senha = localStorage.getItem('senha_atelie_diag');
-
-        if (!nome) return alert("Por favor, preencha a identificação da cliente.");
-        if (fileInput.files.length === 0) return alert("Por favor, anexe a fotografia para prosseguir.");
-
-        const file = fileInput.files[0];
-
-        spinner.style.display = 'block';
-        statusTexto.style.display = 'block';
-        resultadoDiag.style.display = 'none';
-        btn.disabled = true;
-        btn.innerText = "Avaliando Harmonia Facial...";
-        btn.style.opacity = "0.6";
-
-        try {
-            const base64String = await processarImagemParaIA(file);
-
-            const urlDiagnostico = 'https://diagnostico-p10h.onrender.com/api/diagnostico';
-
-            const response = await fetch(urlDiagnostico, {
+    document.getElementById('btn').onclick = async () => {
+        const btn = document.getElementById('btn');
+        btn.innerText = "Calculando Proporções...";
+        const file = document.getElementById('foto').files[0];
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            const res = await fetch('https://diagnostico-p10h.onrender.com/api/diagnostico', {
                 method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${senha}` 
-                },
-                body: JSON.stringify({ 
-                    imagemBase64: base64String, 
-                    mimeType: file.type === 'image/png' ? 'image/png' : 'image/jpeg', 
-                    nomeCliente: nome 
-                })
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer sararamos123' },
+                body: JSON.stringify({ imagemBase64: e.target.result.split(',')[1], mimeType: file.type })
             });
+            const data = await res.json();
+            const d = data.diagnostico;
+            document.getElementById('t1').innerText = d.analise_tercos;
+            document.getElementById('t2').innerText = d.geometria_linhas;
+            document.getElementById('t3').innerText = d.formato_final;
+            document.getElementById('t4').innerText = d.lei_compensacao;
+            document.getElementById('t5').innerText = d.engenharia_corte_cor;
+            document.getElementById('resultado').style.display = 'block';
+            btn.innerText = "Iniciar Diagnóstico Clínico";
+        };
+        reader.readAsDataURL(file);
+    };
 
-            if(response.status === 401) {
-                trancarAppDiag();
-                throw new Error("Acesso Recusado: Chave de Segurança Incorreta.");
-            }
-
-            if (!response.ok) {
-                throw new Error(`Instabilidade na rede neural (Erro ${response.status}).`);
-            }
-
-            const data = await response.json();
-            
-            if(data && data.diagnostico) {
-                const diag = data.diagnostico;
-                document.getElementById('resTercos').innerText = diag.analise_tercos || "Não identificado.";
-                document.getElementById('resGeometria').innerText = diag.geometria_linhas || "Não identificado.";
-                document.getElementById('resFormato').innerText = diag.formato_final || "Não identificado.";
-                document.getElementById('resCompensacao').innerText = diag.lei_compensacao || "Não identificado.";
-                document.getElementById('resEngenharia').innerText = diag.engenharia_corte_cor || "Não identificado.";
-                
-                resultadoDiag.style.display = 'block';
-                
-                setTimeout(() => {
-                    resultadoDiag.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 300);
-
-            } else {
-                throw new Error("Falha ao estruturar o laudo. Tente novamente.");
-            }
-            
-            resetUI();
-
-        } catch (error) {
-            alert("Erro Clínico: " + error.message);
-            resetUI();
-        }
-
-        function resetUI() {
-            spinner.style.display = 'none';
-            statusTexto.style.display = 'none';
-            btn.disabled = false;
-            btn.innerText = "Gerar Laudo Morfológico";
-            btn.style.opacity = "1";
-        }
-    });
+    document.getElementById('pdf-btn').onclick = () => {
+        html2pdf().set({filename: 'Dossie_Visagista.pdf'}).from(document.getElementById('areaPdf')).save();
+    };
     </script>
 </body>
 </html>
