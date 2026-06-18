@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dossiê Visagista - @sararamosateliedabeleza</title>
     
+    <!-- Tipografia -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Biblioteca Geração de PDF (html2pdf) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <style>
         :root {
@@ -16,14 +20,10 @@
             --text-muted: #888888;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
 
         body { 
-            /* Gradiente radial luxuoso (centro sutilmente mais claro) */
-            background: radial-gradient(circle at 50% 0%, #151515 0%, var(--bg-dark) 70%); 
-            background-attachment: fixed;
+            background: #050505;
             color: var(--text-light); 
             font-family: 'Montserrat', sans-serif; 
             display: flex; 
@@ -35,29 +35,24 @@
             justify-content: center; 
         }
 
-        /* 👑 TRATAMENTO PREMIUM DA LOGO */
+        /* 👑 NOVA ENGENHARIA DE LOGO: Efeito "Lighten" para sumir com o fundo azul escuro */
         .logo-app {
             max-width: 170px;
-            margin: 0 auto 40px auto;
+            margin: 0 auto 30px auto;
             display: block;
-            /* Máscara de desfoque: dissolve as bordas duras da foto */
-            -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
-            mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
-            /* Filtro para destacar o dourado */
-            filter: contrast(1.1) drop-shadow(0px 10px 20px rgba(212, 175, 55, 0.05));
+            mix-blend-mode: lighten; /* Faz tudo que for escuro desaparecer no fundo do app */
+            -webkit-mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 75%);
+            mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 75%);
         }
 
-        /* PAINEL GLASSMORPHISM (Efeito Vidro) */
         .painel { 
-            background: rgba(15, 15, 15, 0.6); 
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            background: #0a0a0a; 
             border: 1px solid rgba(212, 175, 55, 0.15); 
             padding: 45px 40px; 
-            border-radius: 16px; 
+            border-radius: 12px; 
             width: 100%; 
-            max-width: 550px; 
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+            max-width: 600px; /* Alargado levemente para caber o PDF bonito */
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
             box-sizing: border-box; 
         }
 
@@ -79,7 +74,6 @@
             letter-spacing: 2px;
         }
 
-        /* INPUTS MINIMALISTAS */
         input[type="text"], input[type="password"] { 
             width: 100%; 
             margin-top: 5px; 
@@ -98,15 +92,8 @@
 
         input[type="text"]:focus, input[type="password"]:focus {
             border-bottom: 1px solid var(--gold);
-            box-shadow: 0 1px 0 0 var(--gold);
         }
 
-        input::placeholder {
-            color: #444;
-            font-weight: 200;
-        }
-
-        /* UPLOAD DE ARQUIVO CHIQUE */
         .upload-container {
             margin-top: 15px;
             margin-bottom: 30px;
@@ -117,7 +104,7 @@
             align-items: center;
             justify-content: center;
             padding: 18px;
-            border: 1px solid var(--gold-dim);
+            border: 1px dashed var(--gold-dim);
             border-radius: 8px;
             cursor: pointer;
             color: var(--gold);
@@ -130,7 +117,7 @@
 
         .custom-file-upload:hover {
             background-color: rgba(212, 175, 55, 0.08);
-            border-color: var(--gold);
+            border-style: solid;
         }
 
         .file-name {
@@ -141,7 +128,6 @@
             font-style: italic;
         }
 
-        /* BOTÕES DE LUXO */
         button { 
             width: 100%; 
             background: linear-gradient(135deg, #D4AF37 0%, #a88720 100%);
@@ -157,58 +143,58 @@
             cursor: pointer; 
             margin-top: 25px; 
             transition: all 0.4s ease; 
-            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.15);
         }
 
-        button:hover { 
-            transform: translateY(-2px);
-            box-shadow: 0 15px 25px rgba(212, 175, 55, 0.25);
-        }
+        button:hover { transform: translateY(-2px); }
 
         .btn-link { 
             background: none; 
             color: var(--text-muted); 
-            text-decoration: none; 
             font-size: 11px; 
             border: none; 
             cursor: pointer; 
             padding: 0; 
-            width: auto; 
             margin: 0; 
             text-transform: uppercase;
             letter-spacing: 1px;
             box-shadow: none;
-            transition: color 0.3s;
         }
 
-        .btn-link:hover {
-            color: var(--gold);
-            transform: none;
-            box-shadow: none;
+        .btn-link:hover { color: var(--gold); transform: none; }
+
+        .botoes-acao {
+            display: flex;
+            gap: 15px;
+            margin-top: 35px;
         }
 
         .btn-secundario { 
             background: transparent; 
             color: var(--gold); 
             border: 1px solid var(--gold); 
-            margin-top: 35px; 
-            box-shadow: none;
+            margin-top: 0; 
         }
 
-        .btn-secundario:hover { 
-            background: rgba(212, 175, 55, 0.05); 
-            box-shadow: none;
-            transform: none;
+        .btn-secundario:hover { background: rgba(212, 175, 55, 0.05); transform: none; }
+        
+        .btn-pdf {
+            background: transparent;
+            color: #fff;
+            border: 1px solid #fff;
+            margin-top: 0;
         }
+        
+        .btn-pdf:hover { background: rgba(255, 255, 255, 0.1); transform: none; }
 
-        /* FORMATAÇÃO DO DOSSIÊ (Estilo Laudo Impresso) */
+        /* FORMATAÇÃO DO DOSSIÊ */
         .resultado-bloco { 
-            background: rgba(0, 0, 0, 0.2); 
+            background: rgba(255, 255, 255, 0.03); 
             padding: 25px 30px; 
             border-radius: 8px;
             border-left: 2px solid var(--gold); 
             text-align: left; 
             margin-bottom: 20px;
+            page-break-inside: avoid; /* Evita que o bloco quebre no meio do PDF */
         }
 
         .resultado-bloco h4 { 
@@ -226,20 +212,11 @@
             font-weight: 300;
         }
         
-        .resultado-bloco p strong {
-            color: var(--gold);
-            font-weight: 500;
-        }
+        .resultado-bloco p strong { color: var(--gold); font-weight: 500; }
 
-        /* SPINNER E STATUS */
         .spinner { 
-            display: none; 
-            width: 30px; 
-            height: 30px; 
-            border: 2px solid rgba(212, 175, 55, 0.1); 
-            border-top: 2px solid var(--gold); 
-            border-radius: 50%; 
-            animation: spin 1s linear infinite; 
+            display: none; width: 30px; height: 30px; border: 2px solid rgba(212, 175, 55, 0.1); 
+            border-top: 2px solid var(--gold); border-radius: 50%; animation: spin 1s linear infinite; 
             margin: 35px auto 20px auto; 
         }
 
@@ -252,21 +229,17 @@
         .rodape-destaque { color: var(--gold); font-weight: 400; display: block; margin-top: 8px; letter-spacing: 2px;}
         
         #telaLoginDiag { text-align: center; padding: 60px 40px; }
-        #telaAppDiag { display: none; width: 100%; max-width: 550px; }
+        #telaAppDiag { display: none; width: 100%; max-width: 600px; }
         .cabecalho-app { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);}
         
         .status-pulse {
-            font-size: 12px;
-            color: var(--gold);
-            text-align: center;
-            margin-top: 10px;
-            display: none;
-            font-weight: 400;
-            letter-spacing: 1px;
-            animation: pulse 2s infinite;
+            font-size: 12px; color: var(--gold); text-align: center; margin-top: 10px;
+            display: none; font-weight: 400; letter-spacing: 1px; animation: pulse 2s infinite;
         }
         @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
 
+        /* ID Para exportar o PDF de forma limpa */
+        #areaPdf { padding: 20px; background: #0a0a0a; border-radius: 12px; }
     </style>
 </head>
 <body>
@@ -292,9 +265,7 @@
 
             <label>Mapeamento Facial</label>
             <div class="upload-container">
-                <label for="fotoDiag" class="custom-file-upload">
-                    + Anexar Fotografia
-                </label>
+                <label for="fotoDiag" class="custom-file-upload">+ Anexar Fotografia</label>
                 <input type="file" id="fotoDiag" accept="image/*" style="display: none;">
                 <div id="fileName" class="file-name">Nenhuma imagem selecionada</div>
             </div>
@@ -303,39 +274,45 @@
             <button id="btnAnalisar">Gerar Laudo Visagista</button>
             
             <div id="loadingDiag" class="spinner"></div>
-            <div id="statusProcessamento" class="status-pulse">Iniciando análise biométrica...</div>
+            <div id="statusProcessamento" class="status-pulse">Realizando cálculos biométricos...</div>
             
-            <!-- RESULTADOS DO DOSSIÊ -->
-            <div id="resultadoDiag" style="display: none; margin-top: 50px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05);">
-                <h3 style="text-align: center; margin-bottom: 35px; font-size: 20px; text-transform: uppercase; letter-spacing: 2px;">Prescrição Clínica</h3>
+            <!-- ÁREA DE DOSSIÊ E EXPORTAÇÃO PDF -->
+            <div id="resultadoDiag" style="display: none; margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.05);">
                 
-                <div class="resultado-bloco">
-                    <h4>I. Proporções Anatômicas</h4>
-                    <p id="resTercos"></p>
-                </div>
-                
-                <div class="resultado-bloco">
-                    <h4>II. Geometria e Linhas</h4>
-                    <p id="resGeometria"></p>
+                <div id="areaPdf"> <!-- Envelopado para o PDF pegar apenas o conteúdo limpo -->
+                    <h3 style="text-align: center; margin-bottom: 35px; margin-top: 20px; font-size: 20px; text-transform: uppercase; letter-spacing: 2px;">Prescrição Clínica</h3>
+                    
+                    <div class="resultado-bloco">
+                        <h4>I. Proporções Anatômicas</h4>
+                        <p id="resTercos"></p>
+                    </div>
+                    
+                    <div class="resultado-bloco">
+                        <h4>II. Geometria e Linhas</h4>
+                        <p id="resGeometria"></p>
+                    </div>
+
+                    <div class="resultado-bloco">
+                        <h4>III. Identidade Visual</h4>
+                        <p><strong>Formato Geométrico:</strong> <span id="resFormato" style="color: #fff;"></span></p>
+                        <p style="margin-top: 10px;"><strong>Temperamento Base:</strong> <span id="resTemperamento" style="color: #fff;"></span></p>
+                    </div>
+
+                    <div class="resultado-bloco">
+                        <h4>IV. Lei da Compensação</h4>
+                        <p id="resCompensacao"></p>
+                    </div>
+
+                    <div class="resultado-bloco">
+                        <h4>V. Engenharia Estratégica</h4>
+                        <p id="resEngenharia"></p>
+                    </div>
                 </div>
 
-                <div class="resultado-bloco">
-                    <h4>III. Formato e Temperamento</h4>
-                    <p><strong>Formato Geométrico:</strong> <span id="resFormato" style="color: #fff;"></span></p>
-                    <p style="margin-top: 10px;"><strong>Temperamento Base:</strong> <span id="resTemperamento" style="color: #fff;"></span></p>
+                <div class="botoes-acao" id="containerBotoes">
+                    <button id="btnSalvarPDF" class="btn-pdf">Salvar PDF</button>
+                    <button onclick="window.location.reload()" class="btn-secundario">Novo Atendimento</button>
                 </div>
-
-                <div class="resultado-bloco">
-                    <h4>IV. Lei da Compensação</h4>
-                    <p id="resCompensacao"></p>
-                </div>
-
-                <div class="resultado-bloco">
-                    <h4>V. Engenharia Estratégica</h4>
-                    <p id="resEngenharia"></p>
-                </div>
-
-                <button onclick="window.location.reload()" class="btn-secundario">Novo Atendimento</button>
             </div>
         </div>
 
@@ -345,6 +322,32 @@
     </div>
 
     <script>
+    // Gerador de PDF Mágico
+    document.getElementById('btnSalvarPDF').addEventListener('click', () => {
+        const elemento = document.getElementById('areaPdf');
+        const nomeCliente = document.getElementById('nomeClienteDiag').value || "Cliente";
+        
+        // Configurações do PDF Premium
+        const opt = {
+            margin:       0.5,
+            filename:     `Dossie_Visagista_${nomeCliente.replace(/\s+/g, '_')}.pdf`,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#0a0a0a' }, // Fundo escuro realçado
+            jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+        };
+
+        // Troca o texto do botão pra avisar que está baixando
+        const btn = document.getElementById('btnSalvarPDF');
+        btn.innerText = "Gerando PDF...";
+        btn.disabled = true;
+
+        html2pdf().set(opt).from(elemento).save().then(() => {
+            btn.innerText = "Salvar PDF";
+            btn.disabled = false;
+        });
+    });
+
+    // Código Padrão de Interface e Envio (Igual ao Anterior)
     document.getElementById('fotoDiag').addEventListener('change', function() {
         const nomeArquivo = this.files[0] ? this.files[0].name : 'Nenhuma imagem selecionada';
         document.getElementById('fileName').textContent = nomeArquivo;
@@ -443,14 +446,13 @@
         statusTexto.style.display = 'block';
         resultadoDiag.style.display = 'none';
         btn.disabled = true;
-        btn.innerText = "Processando Metodologia...";
+        btn.innerText = "Mapeando Pixels Faciais...";
         btn.style.opacity = "0.6";
 
         try {
             const base64String = await processarImagemParaIA(file);
             
-            statusTexto.innerText = "Extraindo simetria e proporções (Passo 1 de 2)...";
-            setTimeout(() => { if(btn.disabled) statusTexto.innerText = "Calculando Lei da Compensação (Passo 2 de 2)..."; }, 8000);
+            statusTexto.innerText = "Calculando métricas visagistas...";
 
             const urlDiagnostico = 'https://diagnostico-p10h.onrender.com/api/diagnostico';
 
@@ -507,7 +509,7 @@
         function resetUI() {
             spinner.style.display = 'none';
             statusTexto.style.display = 'none';
-            statusTexto.innerText = "Iniciando análise biométrica...";
+            statusTexto.innerText = "Realizando cálculos biométricos...";
             btn.disabled = false;
             btn.innerText = "Gerar Laudo Visagista";
             btn.style.opacity = "1";
