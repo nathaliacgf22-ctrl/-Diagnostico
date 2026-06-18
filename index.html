@@ -21,7 +21,6 @@
         }
 
         html { scroll-behavior: smooth; }
-
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg-dark); }
         ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 10px; }
@@ -29,14 +28,8 @@
 
         body { 
             background: radial-gradient(circle at top, #111 0%, var(--bg-dark) 80%);
-            color: var(--text-light); 
-            font-family: 'Montserrat', sans-serif; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            padding: 40px 20px; 
-            margin: 0; 
-            min-height: 100vh; 
+            color: var(--text-light); font-family: 'Montserrat', sans-serif; 
+            display: flex; flex-direction: column; align-items: center; padding: 40px 20px; margin: 0; min-height: 100vh; 
         }
 
         .logo-container { display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 40px; }
@@ -50,7 +43,6 @@
         }
 
         h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--gold); font-weight: 400; letter-spacing: 1px; margin: 0; }
-
         label { font-size: 11px; font-weight: 500; display: block; margin-top: 30px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; }
 
         input[type="text"], input[type="password"] { 
@@ -67,13 +59,7 @@
             position: relative; overflow: hidden; width: 100%; background: linear-gradient(135deg, #D4AF37 0%, #a88720 100%); color: #050505; padding: 18px; border: none; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; margin-top: 25px; transition: all 0.4s ease; box-shadow: 0 10px 20px rgba(212, 175, 55, 0.15);
         }
         .btn-primario:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(212, 175, 55, 0.3); }
-        .btn-primario::after {
-            content: ''; position: absolute; top: -50%; left: -100%; width: 50%; height: 200%;
-            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
-            transform: rotate(25deg); animation: shimmer 4s infinite;
-        }
-        @keyframes shimmer { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
-
+        
         .botoes-acao { display: flex; gap: 15px; margin-top: 35px; }
         .btn-secundario, .btn-pdf { width: 100%; padding: 18px; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.3s ease; }
         .btn-secundario { background: transparent; color: var(--gold); border: 1px solid var(--gold); }
@@ -87,25 +73,12 @@
             background: rgba(255, 255, 255, 0.02); padding: 25px 30px; border-radius: 8px; border-left: 2px solid var(--gold); text-align: left; margin-bottom: 20px; page-break-inside: avoid;
             animation: fadeUp 0.8s ease backwards; 
         }
-        .resultado-bloco:nth-child(3) { animation-delay: 0.1s; }
-        .resultado-bloco:nth-child(4) { animation-delay: 0.2s; }
-        .resultado-bloco:nth-child(5) { animation-delay: 0.3s; }
-        .resultado-bloco:nth-child(6) { animation-delay: 0.4s; }
-        .resultado-bloco:nth-child(7) { animation-delay: 0.5s; }
-
         .resultado-bloco h4 { margin: 0 0 12px 0; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); }
         .resultado-bloco p { margin: 0; font-size: 14.5px; color: #d0d0d0; line-height: 1.8; font-weight: 300; }
         .resultado-bloco p strong { color: var(--gold); font-weight: 500; }
 
-        /* MOLDURA DO MAPA TOPOGRÁFICO */
-        .wrapper-biometria {
-            display: flex; justify-content: center; margin: 25px 0; width: 100%; page-break-inside: avoid;
-            animation: fadeUp 0.8s ease backwards;
-        }
-        .container-canvas {
-            position: relative; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.7); max-width: 100%;
-        }
+        .wrapper-biometria { display: flex; justify-content: center; margin: 25px 0; width: 100%; page-break-inside: avoid; animation: fadeUp 0.8s ease backwards; }
+        .container-canvas { position: relative; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.7); max-width: 100%; }
         #canvasMalha { display: block; max-width: 100%; height: auto; }
 
         .spinner { display: none; width: 35px; height: 35px; border: 2px solid rgba(212, 175, 55, 0.1); border-top: 2px solid var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin: 35px auto 20px auto; }
@@ -116,29 +89,27 @@
         #telaLoginDiag { text-align: center; padding: 50px 40px; }
         #telaAppDiag { display: none; width: 100%; max-width: 650px; }
         .cabecalho-app { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);}
-        #areaPdf { padding: 30px; background: #0a0a0a; border-radius: 12px; }
+        #areaPdf { padding: 30px; background: transparent; border-radius: 12px; }
         
         footer { margin-top: 60px; text-align: center; opacity: 0.8; }
         .rodape-texto { color: #555; font-size: 10px; margin: 0; letter-spacing: 4px; text-transform: uppercase; font-weight: 300; }
         .rodape-destaque { color: var(--gold-dim); font-weight: 400; display: block; margin-top: 8px; letter-spacing: 2px;}
+
+        .pdf-mode { background-color: #0a0a0a !important; background: #0a0a0a !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; box-shadow: none !important; }
+        .pdf-mode * { animation: none !important; opacity: 1 !important; transform: none !important; }
     </style>
 </head>
 <body>
 
     <div id="telaLoginDiag" class="painel">
-        <div class="logo-container">
-            <img src="logo.png" alt="Legado Visagista" class="logo-imagem">
-        </div>
+        <div class="logo-container"><img src="logo.png" alt="Legado Visagista" class="logo-imagem"></div>
         <h3 style="margin-bottom: 40px; font-size: 18px; text-transform: uppercase; letter-spacing: 3px;">Acesso Restrito</h3>
         <input type="password" id="senhaInputDiag" placeholder="Chave de Segurança" style="text-align: center;">
         <button id="btnEntrarDiag" class="btn-primario">Autenticar Sessão</button>
     </div>
 
     <div id="telaAppDiag">
-        <div class="logo-container" style="transform: scale(0.85); margin-bottom: 10px;">
-            <img src="logo.png" alt="Legado Visagista" class="logo-imagem">
-        </div>
-        
+        <div class="logo-container" style="transform: scale(0.85); margin-bottom: 10px;"><img src="logo.png" alt="Legado Visagista" class="logo-imagem"></div>
         <div class="painel">
             <div class="cabecalho-app">
                 <h2 style="font-size: 16px; text-transform: uppercase; letter-spacing: 2px;">Dossiê Clínico</h2>
@@ -154,7 +125,6 @@
                 <input type="file" id="fotoDiag" accept="image/*" style="display: none;">
                 <div id="fileName" class="file-name">Nenhuma imagem selecionada</div>
             </div>
-            <p style="font-size: 11px; color: #555; margin-top: 8px; line-height: 1.5; font-weight: 300;">Para precisão máxima: Rosto frontal, iluminado, sem sorrir e com os cabelos presos.</p>
 
             <button id="btnAnalisar" class="btn-primario">Gerar Diagnóstico Estrutural</button>
             
@@ -163,7 +133,7 @@
             
             <div id="resultadoDiag" style="display: none; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.05);">
                 <div id="areaPdf">
-                    <h3 style="text-align: center; margin-bottom: 35px; margin-top: 20px; font-size: 18px; text-transform: uppercase; letter-spacing: 2px; color: #D4AF37;">Prescrição Visagista</h3>
+                    <h3 style="text-align: center; margin-bottom: 25px; margin-top: 10px; font-size: 18px; text-transform: uppercase; letter-spacing: 2px; color: #D4AF37;">Prescrição Visagista</h3>
                     
                     <div class="wrapper-biometria">
                         <div class="container-canvas">
@@ -171,30 +141,11 @@
                         </div>
                     </div>
 
-                    <div class="resultado-bloco">
-                        <h4>I. Proporções Anatômicas</h4>
-                        <p id="resTercos"></p>
-                    </div>
-                    
-                    <div class="resultado-bloco">
-                        <h4>II. Geometria e Linhas</h4>
-                        <p id="resGeometria"></p>
-                    </div>
-
-                    <div class="resultado-bloco">
-                        <h4>III. Identidade Estrutural</h4>
-                        <p><strong>Formato Geométrico:</strong> <span id="resFormato" style="color: #fff;"></span></p>
-                    </div>
-
-                    <div class="resultado-bloco">
-                        <h4>IV. Lei da Compensação</h4>
-                        <p id="resCompensacao"></p>
-                    </div>
-
-                    <div class="resultado-bloco">
-                        <h4>V. Engenharia Estratégica</h4>
-                        <p id="resEngenharia"></p>
-                    </div>
+                    <div class="resultado-bloco"><h4>I. Proporções Anatômicas</h4><p id="resTercos"></p></div>
+                    <div class="resultado-bloco"><h4>II. Geometria e Linhas</h4><p id="resGeometria"></p></div>
+                    <div class="resultado-bloco"><h4>III. Identidade Estrutural</h4><p><strong>Formato Geométrico:</strong> <span id="resFormato" style="color: #fff;"></span></p></div>
+                    <div class="resultado-bloco"><h4>IV. Lei da Compensação</h4><p id="resCompensacao"></p></div>
+                    <div class="resultado-bloco"><h4>V. Engenharia Estratégica</h4><p id="resEngenharia"></p></div>
                 </div>
 
                 <div class="botoes-acao">
@@ -203,58 +154,77 @@
                 </div>
             </div>
         </div>
-
-        <footer>
-            <p class="rodape-texto">Sistema de Inteligência Visagista<br><span class="rodape-destaque">Ateliê Sara Ramos</span></p>
-        </footer>
+        <footer><p class="rodape-texto">Sistema de Inteligência Visagista<br><span class="rodape-destaque">Ateliê Sara Ramos</span></p></footer>
     </div>
 
     <img id="imgAuxiliar" style="display: none;" alt="Auxiliar">
 
     <script>
-    // Configuração do Inicializador Local do FaceMesh
-    const faceMesh = new FaceMesh({locateFile: (file) => {
-        return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
-    }});
-    
-    faceMesh.setOptions({
-        maxNumFaces: 1,
-        refineLandmarks: true,
-        minDetectionConfidence: 0.5,
-        minTrackingConfidence: 0.5
-    });
+    const faceMesh = new FaceMesh({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`});
+    faceMesh.setOptions({ maxNumFaces: 1, refineLandmarks: true, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
 
-    // Captura global do resultado do mapa facial para desenho em tempo de execução
     let resultadoLandmarksGlobais = null;
+    let matrizCalculada = ""; // Vai guardar os cálculos exatos para mandar à IA
 
-    faceMesh.onResults(results => {
-        resultadoLandmarksGlobais = results;
+    faceMesh.onResults(results => { 
+        resultadoLandmarksGlobais = results; 
+        
+        // CÉREBRO MATEMÁTICO: Calcular proporções exatas no ecrã (O fim das adivinhações)
+        if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
+            const pts = results.multiFaceLandmarks[0];
+            
+            // Medições: Distância Euclidiana Ponto a Ponto
+            const calcDist = (p1, p2) => Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+            
+            // Larguras Principais (Índices FaceMesh)
+            const testaW = calcDist(pts[68], pts[298]); 
+            const macasW = calcDist(pts[234], pts[454]); 
+            const mandibulaW = calcDist(pts[132], pts[361]);
+            const alturaH = calcDist(pts[10], pts[152]); // Raiz ao queixo
+
+            // Regras Matemáticas
+            const tolerancia = 0.05; // 5% de margem de tolerância visual
+            let largurasDesc = "";
+            if (Math.abs(testaW - macasW) < tolerancia && Math.abs(macasW - mandibulaW) < tolerancia) {
+                largurasDesc = "LARGURAS SIMILARES (Testa, Maçãs e Mandíbula alinhadas)";
+            } else if (macasW > testaW && macasW > mandibulaW) {
+                largurasDesc = "MAÇÃS DOMINANTES (Mais largas que testa e mandíbula)";
+            } else if (testaW > macasW && testaW > mandibulaW) {
+                largurasDesc = "TESTA DOMINANTE (Triângulo Invertido/Coração)";
+            } else {
+                largurasDesc = "ASSIMETRIA MISTA";
+            }
+
+            let proporcaoDesc = (alturaH > macasW * 1.15) ? "ROSTO ALONGADO (Altura visivelmente maior que a largura)" : "ROSTO EQUILIBRADO (Altura similar à largura máxima)";
+
+            // Grava a matriz absoluta
+            matrizCalculada = `MATRIZ GEOMÉTRICA EXATA CALCULADA PELO APLICATIVO:\n1. Proporção Vertical: ${proporcaoDesc}\n2. Equilíbrio Horizontal: ${largurasDesc}\n(Baseie o seu Diagnóstico OBRIGATORIAMENTE nestes dados acima).`;
+        }
     });
 
-    // Exportação do laudo premium para PDF
     document.getElementById('btnSalvarPDF').addEventListener('click', () => {
         const elemento = document.getElementById('areaPdf');
         const nomeCliente = document.getElementById('nomeClienteDiag').value || "Cliente";
         
-        const blocos = elemento.querySelectorAll('.resultado-bloco, .wrapper-biometria');
-        blocos.forEach(b => { b.style.animation = 'none'; b.style.opacity = '1'; b.style.transform = 'none'; });
-
-        const opt = {
-            margin:       0.3,
-            filename:     `Dossie_Visagista_${nomeCliente.replace(/\s+/g, '_')}.pdf`,
-            image:        { type: 'jpeg', quality: 1 },
-            html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#0a0a0a' },
-            jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-        };
+        elemento.classList.add('pdf-mode');
 
         const btn = document.getElementById('btnSalvarPDF');
         btn.innerText = "Gerando PDF..."; btn.disabled = true;
 
         setTimeout(() => {
+            const opt = {
+                margin:       0.2,
+                filename:     `Dossie_Visagista_${nomeCliente.replace(/\s+/g, '_')}.pdf`,
+                image:        { type: 'jpeg', quality: 1 },
+                html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#0a0a0a' },
+                jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+
             html2pdf().set(opt).from(elemento).save().then(() => {
                 btn.innerText = "Exportar PDF"; btn.disabled = false;
+                elemento.classList.remove('pdf-mode'); 
             });
-        }, 300);
+        }, 600); 
     });
 
     document.getElementById('fotoDiag').addEventListener('change', function() {
@@ -265,71 +235,49 @@
     const telaApp = document.getElementById('telaAppDiag');
     const senhaInput = document.getElementById('senhaInputDiag');
 
-    function checkAuth() {
-        if (localStorage.getItem('senha_atelie_diag')) {
-            telaLogin.style.display = 'none'; telaApp.style.display = 'block';
-        }
-    }
+    function checkAuth() { if (localStorage.getItem('senha_atelie_diag')) { telaLogin.style.display = 'none'; telaApp.style.display = 'block'; } }
     checkAuth();
-
     document.getElementById('btnEntrarDiag').addEventListener('click', () => {
         if (!senhaInput.value) return alert("Por favor, insira a chave de segurança.");
-        localStorage.setItem('senha_atelie_diag', senhaInput.value);
-        checkAuth();
+        localStorage.setItem('senha_atelie_diag', senhaInput.value); checkAuth();
     });
+    document.getElementById('btnSairDiag').addEventListener('click', () => { localStorage.removeItem('senha_atelie_diag'); window.location.reload(); });
 
-    document.getElementById('btnSairDiag').addEventListener('click', () => {
-        localStorage.removeItem('senha_atelie_diag');
-        window.location.reload();
-    });
-
-    // Execução da renderização da malha dourada sobre a foto original
     function renderizarMalhaDourada(imgElemento) {
         const canvas = document.getElementById('canvasMalha');
         const ctx = canvas.getContext('2d');
+        const largura = imgElemento.width; const altura = imgElemento.height;
+        canvas.width = largura; canvas.height = altura;
 
-        // Limita a proporção máxima para não quebrar a memória do dispositivo
-        const MAX_DIM = 700;
-        let largura = imgElemento.naturalWidth;
-        let altura = imgElemento.naturalHeight;
-
-        if (largura > altura) {
-            if (largura > MAX_DIM) { altura *= MAX_DIM / largura; largura = MAX_DIM; }
-        } else {
-            if (altura > MAX_DIM) { largura *= MAX_DIM / altura; altura = MAX_DIM; }
-        }
-
-        canvas.width = largura;
-        canvas.height = altura;
-
-        // Desenha o plano de fundo com a foto original da cliente
         ctx.drawImage(imgElemento, 0, 0, largura, altura);
 
         if (resultadoLandmarksGlobais && resultadoLandmarksGlobais.multiFaceLandmarks.length > 0) {
             const pontos = resultadoLandmarksGlobais.multiFaceLandmarks[0];
 
-            // Injeta a estilização dourada nos conectores de tesselação facial
-            window.drawConnectors(ctx, pontos, window.FACEMESH_TESSELATION, {
-                color: '#D4AF37',
-                lineWidth: 0.4
-            });
+            window.drawConnectors(ctx, pontos, window.FACEMESH_FACE_OVAL, { color: '#D4AF37', lineWidth: 2.5 });
+            window.drawConnectors(ctx, pontos, window.FACEMESH_LEFT_EYEBROW, { color: '#D4AF37', lineWidth: 1.5 });
+            window.drawConnectors(ctx, pontos, window.FACEMESH_RIGHT_EYEBROW, { color: '#D4AF37', lineWidth: 1.5 });
+            window.drawConnectors(ctx, pontos, window.FACEMESH_LIPS, { color: '#D4AF37', lineWidth: 1.5 });
 
-            // Desenha os contornos principais do crânio com maior força de linha
-            window.drawConnectors(ctx, pontos, window.FACEMESH_CONTOURS, {
-                color: '#D4AF37',
-                lineWidth: 0.9
-            });
-            
-            // Adiciona pontos de ouro nas extremidades anatómicas para o acabamento de alta performance
-            window.drawLandmarks(ctx, pontos, {
-                color: '#D4AF37',
-                numLandmarks: 1,
-                radius: 0.6
-            });
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.7)';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([6, 6]); 
+
+            const desenharLinhaProporcao = (indexPonto) => {
+                const y = pontos[indexPonto].y * altura;
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(largura, y); ctx.stroke();
+                ctx.beginPath(); ctx.arc(pontos[indexPonto].x * largura, y, 3, 0, 2 * Math.PI);
+                ctx.fillStyle = '#ffffff'; ctx.fill();
+            };
+
+            desenharLinhaProporcao(10);
+            desenharLinhaProporcao(151);
+            desenharLinhaProporcao(2);
+            desenharLinhaProporcao(152);
+            ctx.setLineDash([]);
         }
     }
 
-    // Ação Principal do Sistema
     document.getElementById('btnAnalisar').addEventListener('click', async () => {
         const btn = document.getElementById('btnAnalisar');
         const spinner = document.getElementById('loadingDiag');
@@ -337,69 +285,65 @@
         const fileInput = document.getElementById('fotoDiag');
         const resultDiv = document.getElementById('resultadoDiag');
         const imgAux = document.getElementById('imgAuxiliar');
-        
         const nome = document.getElementById('nomeClienteDiag').value;
         const senha = localStorage.getItem('senha_atelie_diag');
 
-        if (!nome) return alert("Por favor, preencha a identificação da cliente.");
-        if (!fileInput.files[0]) return alert("Por favor, anexe a fotografia para prosseguir.");
+        if (!nome) return alert("Por favor, preencha a identificação.");
+        if (!fileInput.files[0]) return alert("Por favor, anexe a fotografia.");
 
         spinner.style.display = 'block'; statusTexto.style.display = 'block'; resultDiv.style.display = 'none';
-        btn.disabled = true; btn.innerText = "Processando Biometria..."; btn.style.opacity = "0.6";
+        btn.disabled = true; btn.innerText = "A Processar..."; btn.style.opacity = "0.6";
 
         try {
             const arquivo = fileInput.files[0];
-            
-            // Carrega e converte a imagem localmente para processamento da malha virtual
-            const lerImagemBase64 = () => new Promise((res) => {
+            const dataUrlString = await new Promise((res, rej) => {
                 const reader = new FileReader();
                 reader.onload = e => res(e.target.result);
+                reader.onerror = () => rej("Falha ao ler a imagem.");
                 reader.readAsDataURL(arquivo);
             });
 
-            const dataUrlString = await lerImagemBase64();
+            await new Promise((resolve) => { imgAux.onload = resolve; imgAux.src = dataUrlString; });
+
+            const canvasLimpador = document.createElement('canvas');
+            let rw = imgAux.naturalWidth; let rh = imgAux.naturalHeight;
+            const MAX_DIM = 800;
+            if (rw > rh && rw > MAX_DIM) { rh *= MAX_DIM / rw; rw = MAX_DIM; } 
+            else if (rh > MAX_DIM) { rw *= MAX_DIM / rh; rh = MAX_DIM; }
+            canvasLimpador.width = rw; canvasLimpador.height = rh;
+            canvasLimpador.getContext('2d').drawImage(imgAux, 0, 0, rw, rh);
             
-            // Monta o elemento de imagem para a varredura do FaceMesh
-            await new Promise((resolve) => {
-                imgAux.src = dataUrlString;
-                imgAux.onload = () => resolve();
-            });
+            const base64LimpoEReto = canvasLimpador.toDataURL('image/jpeg', 0.85);
 
-            // 1. DISPARA A VARREDURA DA MALHA LOCALMENTE
-            statusTexto.innerText = "Calculando eixos de simetria facial...";
-            await faceMesh.send({ image: imgAux });
+            const imgProcessada = new Image();
+            await new Promise((resolve) => { imgProcessada.onload = resolve; imgProcessada.src = base64LimpoEReto; });
 
-            // 2. DISPARA A LEITURA COGNITIVA NO SERVIDOR
-            statusTexto.innerText = "Consultando Matriz Geométrica (Gemini 3.1 Pro)...";
-            const base64Limpa = dataUrlString.split(',')[1];
+            statusTexto.innerText = "A desenhar proporções arquitetónicas...";
+            
+            // Aguarda o MediaPipe terminar os cálculos na tela antes de continuar
+            await faceMesh.send({ image: imgProcessada });
+            
+            // Aguardamos 500ms para garantir que a matrizCalculada foi preenchida pela função assíncrona
+            await new Promise(r => setTimeout(r, 500)); 
+
+            statusTexto.innerText = "A analisar matriz na IA...";
+            const apenasBase64 = base64LimpoEReto.split(',')[1];
 
             const res = await fetch('https://diagnostico-p10h.onrender.com/api/diagnostico', {
                 method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json', 
-                    'Authorization': `Bearer ${senha}` 
-                },
-                body: JSON.stringify({ imagemBase64: base64Limpa, mimeType: 'image/jpeg', nomeCliente: nome })
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${senha}` },
+                // AGORA ENVIAMOS A MATRIZ MATEMÁTICA OBRIGATÓRIA PARA A IA!
+                body: JSON.stringify({ imagemBase64: apenasBase64, mimeType: 'image/jpeg', nomeCliente: nome, matrizExtra: matrizCalculada })
             });
 
-            if(res.status === 401) { 
-                localStorage.removeItem('senha_atelie_diag'); 
-                window.location.reload(); 
-                return;
-            }
-
-            if (!res.ok) {
-                const erroServidor = await res.json();
-                throw new Error(erroServidor.erro || "Falha desconhecida no servidor.");
-            }
+            if(res.status === 401) { localStorage.removeItem('senha_atelie_diag'); window.location.reload(); return; }
+            if (!res.ok) { const err = await res.json(); throw new Error(err.erro || "Falha no servidor."); }
 
             const data = await res.json();
             const diag = data.diagnostico;
             
-            // Transfere o desenho gerado pelo mapeamento para o canvas visível do PDF
-            renderizarMalhaDourada(imgAux);
+            renderizarMalhaDourada(imgProcessada);
 
-            // Alimenta os blocos do laudo estrutural
             document.getElementById('resTercos').innerText = diag.analise_tercos || "N/A";
             document.getElementById('resGeometria').innerText = diag.geometria_linhas || "N/A";
             document.getElementById('resFormato').innerText = diag.formato_final || "N/A";
