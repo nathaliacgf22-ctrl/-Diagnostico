@@ -95,8 +95,12 @@
         .rodape-texto { color: #555; font-size: 10px; margin: 0; letter-spacing: 4px; text-transform: uppercase; font-weight: 300; }
         .rodape-destaque { color: var(--gold-dim); font-weight: 400; display: block; margin-top: 8px; letter-spacing: 2px;}
 
-        .pdf-mode { background-color: #0a0a0a !important; background: #0a0a0a !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; box-shadow: none !important; }
-        .pdf-mode * { animation: none !important; opacity: 1 !important; transform: none !important; }
+        body.imprimindo-pdf .painel { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; background: #0a0a0a !important; box-shadow: none !important; border: none !important; }
+        body.imprimindo-pdf #areaPdf { background-color: #0a0a0a !important; }
+        body.imprimindo-pdf .resultado-bloco { background-color: #151515 !important; border-left: 2px solid #D4AF37 !important; animation: none !important; opacity: 1 !important; transform: none !important; }
+        body.imprimindo-pdf .container-canvas { box-shadow: none !important; border: 1px solid #D4AF37 !important; }
+        body.imprimindo-pdf h3, body.imprimindo-pdf h4, body.imprimindo-pdf strong { color: #D4AF37 !important; }
+        body.imprimindo-pdf p, body.imprimindo-pdf span { color: #d0d0d0 !important; }
     </style>
 </head>
 <body>
@@ -133,7 +137,7 @@
             
             <div id="resultadoDiag" style="display: none; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.05);">
                 <div id="areaPdf">
-                    <h3 style="text-align: center; margin-bottom: 25px; margin-top: 10px; font-size: 18px; text-transform: uppercase; letter-spacing: 2px; color: #D4AF37;">Prescrição Visagista</h3>
+                    <h3 style="text-align: center; margin-bottom: 25px; margin-top: 10px; font-size: 18px; text-transform: uppercase; letter-spacing: 2px;">Prescrição Visagista</h3>
                     
                     <div class="wrapper-biometria">
                         <div class="container-canvas">
@@ -143,7 +147,7 @@
 
                     <div class="resultado-bloco"><h4>I. Proporções Anatômicas</h4><p id="resTercos"></p></div>
                     <div class="resultado-bloco"><h4>II. Geometria e Linhas</h4><p id="resGeometria"></p></div>
-                    <div class="resultado-bloco"><h4>III. Identidade Estrutural</h4><p><strong>Formato Geométrico:</strong> <span id="resFormato" style="color: #fff;"></span></p></div>
+                    <div class="resultado-bloco"><h4>III. Identidade Estrutural</h4><p><strong>Formato Geométrico:</strong> <span id="resFormato"></span></p></div>
                     <div class="resultado-bloco"><h4>IV. Lei da Compensação</h4><p id="resCompensacao"></p></div>
                     <div class="resultado-bloco"><h4>V. Engenharia Estratégica</h4><p id="resEngenharia"></p></div>
                 </div>
@@ -164,26 +168,25 @@
     faceMesh.setOptions({ maxNumFaces: 1, refineLandmarks: true, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
 
     let resultadoLandmarksGlobais = null;
-    let matrizCalculada = ""; // Vai guardar os cálculos exatos para mandar à IA
+    let matrizCalculada = ""; 
+    
+    // Novas variáveis para Ponto de Controle (Promessas sincronizadas)
+    let resolveMotorMatematico = null;
+    let rejectMotorMatematico = null;
 
     faceMesh.onResults(results => { 
         resultadoLandmarksGlobais = results; 
         
-        // CÉREBRO MATEMÁTICO: Calcular proporções exatas no ecrã (O fim das adivinhações)
         if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
             const pts = results.multiFaceLandmarks[0];
-            
-            // Medições: Distância Euclidiana Ponto a Ponto
             const calcDist = (p1, p2) => Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
             
-            // Larguras Principais (Índices FaceMesh)
             const testaW = calcDist(pts[68], pts[298]); 
             const macasW = calcDist(pts[234], pts[454]); 
             const mandibulaW = calcDist(pts[132], pts[361]);
-            const alturaH = calcDist(pts[10], pts[152]); // Raiz ao queixo
+            const alturaH = calcDist(pts[10], pts[152]); 
 
-            // Regras Matemáticas
-            const tolerancia = 0.05; // 5% de margem de tolerância visual
+            const tolerancia = 0.05; 
             let largurasDesc = "";
             if (Math.abs(testaW - macasW) < tolerancia && Math.abs(macasW - mandibulaW) < tolerancia) {
                 largurasDesc = "LARGURAS SIMILARES (Testa, Maçãs e Mandíbula alinhadas)";
@@ -197,8 +200,17 @@
 
             let proporcaoDesc = (alturaH > macasW * 1.15) ? "ROSTO ALONGADO (Altura visivelmente maior que a largura)" : "ROSTO EQUILIBRADO (Altura similar à largura máxima)";
 
-            // Grava a matriz absoluta
             matrizCalculada = `MATRIZ GEOMÉTRICA EXATA CALCULADA PELO APLICATIVO:\n1. Proporção Vertical: ${proporcaoDesc}\n2. Equilíbrio Horizontal: ${largurasDesc}\n(Baseie o seu Diagnóstico OBRIGATORIAMENTE nestes dados acima).`;
+            
+            // O Paquímetro grita: Terminei a nova foto! Pode enviar para a Inteligência!
+            if (resolveMotorMatematico) {
+                resolveMotorMatematico();
+            }
+        } else {
+            // Se enviar foto do chão ou sem rosto
+            if (rejectMotorMatematico) {
+                rejectMotorMatematico(new Error("Nenhum rosto claro detectado. A IA foi bloqueada por segurança. Tente uma foto melhor iluminada."));
+            }
         }
     });
 
@@ -206,25 +218,34 @@
         const elemento = document.getElementById('areaPdf');
         const nomeCliente = document.getElementById('nomeClienteDiag').value || "Cliente";
         
-        elemento.classList.add('pdf-mode');
+        document.body.classList.add('imprimindo-pdf');
 
         const btn = document.getElementById('btnSalvarPDF');
         btn.innerText = "Gerando PDF..."; btn.disabled = true;
 
         setTimeout(() => {
             const opt = {
-                margin:       0.2,
+                margin:       [0.4, 0.4, 0.4, 0.4], 
                 filename:     `Dossie_Visagista_${nomeCliente.replace(/\s+/g, '_')}.pdf`,
                 image:        { type: 'jpeg', quality: 1 },
-                html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#0a0a0a' },
+                html2canvas:  { 
+                    scale: 2, 
+                    useCORS: true, 
+                    backgroundColor: '#0a0a0a',
+                    windowWidth: document.documentElement.offsetWidth 
+                },
                 jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
             };
 
             html2pdf().set(opt).from(elemento).save().then(() => {
                 btn.innerText = "Exportar PDF"; btn.disabled = false;
-                elemento.classList.remove('pdf-mode'); 
+                document.body.classList.remove('imprimindo-pdf'); 
+            }).catch(err => {
+                console.error("Erro no PDF:", err);
+                document.body.classList.remove('imprimindo-pdf');
+                btn.innerText = "Exportar PDF"; btn.disabled = false;
             });
-        }, 600); 
+        }, 800); 
     });
 
     document.getElementById('fotoDiag').addEventListener('change', function() {
@@ -294,6 +315,10 @@
         spinner.style.display = 'block'; statusTexto.style.display = 'block'; resultDiv.style.display = 'none';
         btn.disabled = true; btn.innerText = "A Processar..."; btn.style.opacity = "0.6";
 
+        // LAVAGEM CEREBRAL: Apaga a memória da cliente antiga antes de começar
+        matrizCalculada = "";
+        resultadoLandmarksGlobais = null;
+
         try {
             const arquivo = fileInput.files[0];
             const dataUrlString = await new Promise((res, rej) => {
@@ -318,13 +343,25 @@
             const imgProcessada = new Image();
             await new Promise((resolve) => { imgProcessada.onload = resolve; imgProcessada.src = base64LimpoEReto; });
 
-            statusTexto.innerText = "A desenhar proporções arquitetónicas...";
+            statusTexto.innerText = "A desenhar proporções arquitetónicas (Aguarde)...";
             
-            // Aguarda o MediaPipe terminar os cálculos na tela antes de continuar
+            // O BLOQUEIO DE SEGURANÇA: Congela o código até o MediaPipe terminar 100%
+            const bloqueioMatematico = new Promise((resolve, reject) => {
+                resolveMotorMatematico = resolve;
+                rejectMotorMatematico = reject;
+                
+                // Se o telemóvel for tão lento que demore mais de 10 segundos, ele avisa para não travar
+                setTimeout(() => {
+                    if (rejectMotorMatematico) reject(new Error("O processamento da foto está a demorar muito. A foto pode não estar nítida o suficiente."));
+                }, 15000); 
+            });
+
             await faceMesh.send({ image: imgProcessada });
-            
-            // Aguardamos 500ms para garantir que a matrizCalculada foi preenchida pela função assíncrona
-            await new Promise(r => setTimeout(r, 500)); 
+            await bloqueioMatematico; // Só avança desta linha quando a nova matriz estiver 100% pronta!
+
+            // Liberta as promessas de controlo
+            resolveMotorMatematico = null;
+            rejectMotorMatematico = null;
 
             statusTexto.innerText = "A analisar matriz na IA...";
             const apenasBase64 = base64LimpoEReto.split(',')[1];
@@ -332,7 +369,6 @@
             const res = await fetch('https://diagnostico-p10h.onrender.com/api/diagnostico', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${senha}` },
-                // AGORA ENVIAMOS A MATRIZ MATEMÁTICA OBRIGATÓRIA PARA A IA!
                 body: JSON.stringify({ imagemBase64: apenasBase64, mimeType: 'image/jpeg', nomeCliente: nome, matrizExtra: matrizCalculada })
             });
 
@@ -355,6 +391,9 @@
 
         } catch (error) {
             alert(error.message);
+            // Limpa as variáveis se der erro para não ficar preso
+            resolveMotorMatematico = null;
+            rejectMotorMatematico = null;
         } finally {
             spinner.style.display = 'none'; statusTexto.style.display = 'none';
             btn.disabled = false; btn.innerText = "Gerar Diagnóstico Estrutural"; btn.style.opacity = "1";
