@@ -82,13 +82,11 @@
         .rodape-texto { color: #555; font-size: 10px; margin: 0; letter-spacing: 4px; text-transform: uppercase; font-weight: 300; }
         .rodape-destaque { color: var(--gold-dim); font-weight: 400; display: block; margin-top: 8px; letter-spacing: 2px;}
 
-        /* 🛡️ BRANQUEAMENTO DE IMPRESSÃO EXCLUSIVO (Mata o filtro escuro na foto) */
+        /* BLINDAGEM DE PDF: Retira a mesclagem de tela que deixava a foto escura no telemóvel */
         body.imprimindo-pdf .painel { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; background: #050505 !important; box-shadow: none !important; border: none !important; }
         body.imprimindo-pdf .resultado-bloco { background-color: #111111 !important; border-left: 2px solid #D4AF37 !important; animation: none !important; opacity: 1 !important; transform: none !important; }
         body.imprimindo-pdf h3, body.imprimindo-pdf h4, body.imprimindo-pdf strong { color: #D4AF37 !important; }
         body.imprimindo-pdf p, body.imprimindo-pdf span { color: #d0d0d0 !important; }
-        
-        /* Força a imagem clonada a ignorar opacidades ou filtros herdados do telemóvel */
         body.imprimindo-pdf #imgCanvasTemp {
             opacity: 1 !important;
             filter: none !important;
@@ -140,7 +138,7 @@
                         </div>
                     </div>
 
-                    <div class="resultado-bloco"><h4>I. Mapeamento de Linhas Oculares e Mandibulares</h4><p id="resTercos"></p></div>
+                    <div class="resultado-bloco"><h4>I. Diagnóstico Físico</h4><p id="resTercos"></p></div>
                     <div class="resultado-bloco"><h4>II. Geometria e Linhas de Força</h4><p id="resGeometria"></p></div>
                     <div class="resultado-bloco"><h4>III. Subclassificação Estrutural</h4><p><strong>Formato Validado:</strong> <span id="resFormato" style="color: #fff;"></span></p></div>
                     <div class="resultado-bloco"><h4>IV. Lei da Compensação</h4><p id="resCompensacao"></p></div>
@@ -156,8 +154,6 @@
         <footer><p class="rodape-texto">Sistema de Inteligência Visagista<br><span class="rodape-destaque">Ateliê Sara Ramos</span></p></footer>
     </div>
 
-    <img id="imgAuxiliar" style="display: none;" alt="Auxiliar">
-
     <script>
     const faceMesh = new FaceMesh({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`});
     faceMesh.setOptions({ maxNumFaces: 1, refineLandmarks: true, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
@@ -170,17 +166,14 @@
         if (resolveMotorMatematico) resolveMotorMatematico();
     });
 
-    // O SCRIPT DE CAPTURA DO PDF ULTRA-COMPATÍVEL DE SUCESSO
     document.getElementById('btnSalvarPDF').addEventListener('click', () => {
         const elemento = document.getElementById('areaPdf');
         const nomeCliente = document.getElementById('nomeClienteDiag').value || "Cliente";
-        
         window.scrollTo(0, 0);
 
-        // 🌟 CORREÇÃO CIRÚRGICA: Exportamos como PNG (evita o canal alpha que gerava o filtro preto no iOS)
         const canvas = document.getElementById('canvasMalha');
         const imgCanvasTemp = document.createElement('img');
-        imgCanvasTemp.src = canvas.toDataURL('image/png'); // Mudado de jpeg para png para travar a nitidez
+        imgCanvasTemp.src = canvas.toDataURL('image/png'); // Mantém a nitidez total em PNG
         imgCanvasTemp.id = 'imgCanvasTemp';
         imgCanvasTemp.style.width = '100%';
         imgCanvasTemp.style.display = 'block';
@@ -203,13 +196,7 @@
                 margin:       [0.4, 0.4, 0.4, 0.4], 
                 filename:     `Dossie_Visagista_${nomeCliente.replace(/\s+/g, '_')}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { 
-                    scale: escalaPdf, 
-                    useCORS: true, 
-                    backgroundColor: '#050505',
-                    scrollY: 0,
-                    windowY: 0
-                },
+                html2canvas:  { scale: escalaPdf, useCORS: true, backgroundColor: '#050505', scrollY: 0, windowY: 0 },
                 jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
             };
 
@@ -288,7 +275,6 @@
         const statusTexto = document.getElementById('statusProcessamento');
         const fileInput = document.getElementById('fotoDiag');
         const resultDiv = document.getElementById('resultadoDiag');
-        const imgAux = document.getElementById('imgAuxiliar');
         const nome = document.getElementById('nomeClienteDiag').value;
         const senha = localStorage.getItem('senha_atelie_diag');
 
@@ -297,8 +283,6 @@
 
         spinner.style.display = 'block'; statusTexto.style.display = 'block'; resultDiv.style.display = 'none';
         btn.disabled = true; btn.innerText = "A Processar..."; btn.style.opacity = "0.6";
-
-        resultadoLandmarksGlobais = null;
 
         try {
             const arquivo = fileInput.files[0];
@@ -309,15 +293,16 @@
                 reader.readAsDataURL(arquivo);
             });
 
-            await new Promise((resolve) => { imgAux.onload = resolve; imgAux.src = dataUrlString; });
+            const imgLimpa = new Image();
+            await new Promise((resolve) => { imgLimpa.onload = resolve; imgLimpa.src = dataUrlString; });
 
             const canvasLimpador = document.createElement('canvas');
-            let rw = imgAux.naturalWidth; let rh = imgAux.naturalHeight;
+            let rw = imgLimpa.naturalWidth; let rh = imgLimpa.naturalHeight;
             const MAX_DIM = 800;
             if (rw > rh && rw > MAX_DIM) { rh *= MAX_DIM / rw; rw = MAX_DIM; } 
             else if (rh > MAX_DIM) { rw *= MAX_DIM / rh; rh = MAX_DIM; }
             canvasLimpador.width = rw; canvasLimpador.height = rh;
-            canvasLimpador.getContext('2d').drawImage(imgAux, 0, 0, rw, rh);
+            canvasLimpador.getContext('2d').drawImage(imgLimpa, 0, 0, rw, rh);
             
             const base64LimpoEReto = canvasLimpador.toDataURL('image/jpeg', 0.85);
 
@@ -329,13 +314,15 @@
             const bloqueioSincrono = new Promise((resolve) => { resolveMotorMatematico = resolve; });
             await faceMesh.send({ image: imgProcessada });
             await bloqueioSincrono; 
-
             resolveMotorMatematico = null;
 
             statusTexto.innerText = "Analisando linhas estruturais na IA...";
             const apenasBase64 = base64LimpoEReto.split(',')[1];
 
-            const res = await fetch('https://diagnostico-p10h.onrender.com/api/diagnostico', {
+            // 🌟 A CURA DA MEMÓRIA CACHE DO TELEMÓVEL: O link gerado nunca se repete.
+            const urlLimpaCache = `https://diagnostico-p10h.onrender.com/api/diagnostico?timestamp=${Date.now()}`;
+
+            const res = await fetch(urlLimpaCache, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${senha}` },
                 body: JSON.stringify({ imagemBase64: apenasBase64, mimeType: 'image/jpeg', nomeCliente: nome })
