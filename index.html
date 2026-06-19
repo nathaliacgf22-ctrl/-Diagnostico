@@ -21,11 +21,6 @@
         }
 
         html { scroll-behavior: smooth; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg-dark); }
-        ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
-
         body { 
             background: radial-gradient(circle at top, #111 0%, var(--bg-dark) 80%);
             color: var(--text-light); font-family: 'Montserrat', sans-serif; 
@@ -33,8 +28,7 @@
         }
 
         .logo-container { display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 40px; }
-        .logo-imagem { max-width: 220px; margin-bottom: -10px; filter: drop-shadow(0px 10px 15px rgba(212, 175, 55, 0.2)); transition: transform 0.5s ease; }
-        .logo-imagem:hover { transform: scale(1.03); }
+        .logo-imagem { max-width: 220px; margin-bottom: -10px; filter: drop-shadow(0px 10px 15px rgba(212, 175, 55, 0.2)); }
 
         .painel { 
             background: rgba(15, 15, 15, 0.65); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -46,26 +40,21 @@
         label { font-size: 11px; font-weight: 500; display: block; margin-top: 30px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; }
 
         input[type="text"], input[type="password"] { 
-            width: 100%; margin-top: 5px; padding: 12px 0; background-color: transparent; color: #fff; border: none; border-bottom: 1px solid var(--gold-dim); font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 300; box-sizing: border-box; transition: all 0.4s ease; outline: none;
+            width: 100%; margin-top: 5px; padding: 12px 0; background-color: transparent; color: #fff; border: none; border-bottom: 1px solid var(--gold-dim); font-size: 16px; font-weight: 300; box-sizing: border-box; outline: none;
         }
-        input[type="text"]:focus, input[type="password"]:focus { border-bottom: 1px solid var(--gold); box-shadow: 0 1px 0 0 var(--gold); }
 
         .upload-container { margin-top: 15px; margin-bottom: 25px; }
-        .custom-file-upload { display: flex; align-items: center; justify-content: center; padding: 20px; border: 1px dashed var(--gold-dim); border-radius: 8px; cursor: pointer; color: var(--gold); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; transition: all 0.3s; background-color: rgba(212, 175, 55, 0.02); }
-        .custom-file-upload:hover { background-color: rgba(212, 175, 55, 0.08); border-style: solid; }
+        .custom-file-upload { display: flex; align-items: center; justify-content: center; padding: 20px; border: 1px dashed var(--gold-dim); border-radius: 8px; cursor: pointer; color: var(--gold); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; background-color: rgba(212, 175, 55, 0.02); }
         .file-name { font-size: 11px; color: #666; margin-top: 10px; text-align: center; font-style: italic; }
 
         .btn-primario { 
-            position: relative; overflow: hidden; width: 100%; background: linear-gradient(135deg, #D4AF37 0%, #a88720 100%); color: #050505; padding: 18px; border: none; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; margin-top: 25px; transition: all 0.4s ease; box-shadow: 0 10px 20px rgba(212, 175, 55, 0.15);
+            width: 100%; background: linear-gradient(135deg, #D4AF37 0%, #a88720 100%); color: #050505; padding: 18px; border: none; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; margin-top: 25px; box-shadow: 0 10px 20px rgba(212, 175, 55, 0.15);
         }
-        .btn-primario:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(212, 175, 55, 0.3); }
         
         .botoes-acao { display: flex; gap: 15px; margin-top: 35px; }
-        .btn-secundario, .btn-pdf { width: 100%; padding: 18px; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.3s ease; }
+        .btn-secundario, .btn-pdf { width: 100%; padding: 18px; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; }
         .btn-secundario { background: transparent; color: var(--gold); border: 1px solid var(--gold); }
-        .btn-secundario:hover { background: rgba(212, 175, 55, 0.08); }
         .btn-pdf { background: transparent; color: #fff; border: 1px solid #fff; }
-        .btn-pdf:hover { background: rgba(255, 255, 255, 0.1); }
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -75,15 +64,15 @@
         }
         .resultado-bloco h4 { margin: 0 0 12px 0; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); }
         .resultado-bloco p { margin: 0; font-size: 14.5px; color: #d0d0d0; line-height: 1.8; font-weight: 300; }
-        .resultado-bloco p strong { color: var(--gold); font-weight: 500; }
 
         .wrapper-biometria { display: flex; justify-content: center; margin: 25px 0; width: 100%; page-break-inside: avoid; animation: fadeUp 0.8s ease backwards; }
-        .container-canvas { position: relative; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.7); max-width: 100%; }
+        .container-canvas { position: relative; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; overflow: hidden; max-width: 100%; }
         #canvasMalha { display: block; max-width: 100%; height: auto; }
 
         .spinner { display: none; width: 35px; height: 35px; border: 2px solid rgba(212, 175, 55, 0.1); border-top: 2px solid var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin: 35px auto 20px auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .status-pulse { font-size: 12px; color: var(--gold); text-align: center; margin-top: 10px; display: none; font-weight: 400; letter-spacing: 1px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
         
         #telaLoginDiag { text-align: center; padding: 50px 40px; }
         #telaAppDiag { display: none; width: 100%; max-width: 650px; }
@@ -94,7 +83,7 @@
         .rodape-texto { color: #555; font-size: 10px; margin: 0; letter-spacing: 4px; text-transform: uppercase; font-weight: 300; }
         .rodape-destaque { color: var(--gold-dim); font-weight: 400; display: block; margin-top: 8px; letter-spacing: 2px;}
 
-        /* MODO DE IMPRESSÃO CEGO (Esconde tudo que causa o Erro Preto) */
+        /* 🛡️ ESTILO IMPRESSÃO EXCLUSIVO SÓLIDO (Mata o preto do telemóvel) */
         body.imprimindo-pdf .painel { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; background: #050505 !important; box-shadow: none !important; border: none !important; }
         body.imprimindo-pdf .resultado-bloco { background-color: #111111 !important; border-left: 2px solid #D4AF37 !important; animation: none !important; opacity: 1 !important; transform: none !important; }
         body.imprimindo-pdf h3, body.imprimindo-pdf h4, body.imprimindo-pdf strong { color: #D4AF37 !important; }
@@ -166,52 +155,25 @@
     faceMesh.setOptions({ maxNumFaces: 1, refineLandmarks: true, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
 
     let resultadoLandmarksGlobais = null;
-    let matrizCalculada = ""; 
     let resolveMotorMatematico = null;
-    let rejectMotorMatematico = null;
 
     faceMesh.onResults(results => { 
         resultadoLandmarksGlobais = results; 
         if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
-            const pts = results.multiFaceLandmarks[0];
-            const calcDist = (p1, p2) => Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
-            
-            const testaW = calcDist(pts[68], pts[298]); 
-            const macasW = calcDist(pts[234], pts[454]); 
-            const mandibulaW = calcDist(pts[132], pts[361]);
-            const alturaH = calcDist(pts[10], pts[152]); 
-
-            const tolerancia = 0.05; 
-            let largurasDesc = "";
-            if (Math.abs(testaW - macasW) < tolerancia && Math.abs(macasW - mandibulaW) < tolerancia) {
-                largurasDesc = "LARGURAS SIMILARES (Testa, Maçãs e Mandíbula alinhadas)";
-            } else if (macasW > testaW && macasW > mandibulaW) {
-                largurasDesc = "MAÇÃS DOMINANTES (Mais largas que testa e mandíbula)";
-            } else if (testaW > macasW && testaW > mandibulaW) {
-                largurasDesc = "TESTA DOMINANTE (Triângulo Invertido/Coração)";
-            } else {
-                largurasDesc = "ASSIMETRIA MISTA";
-            }
-
-            let proporcaoDesc = (alturaH > macasW * 1.15) ? "ROSTO ALONGADO (Altura visivelmente maior que a largura)" : "ROSTO EQUILIBRADO (Altura similar à largura máxima)";
-
-            matrizCalculada = `MATRIZ GEOMÉTRICA EXATA CALCULADA PELO APLICATIVO:\n1. Proporção Vertical: ${proporcaoDesc}\n2. Equilíbrio Horizontal: ${largurasDesc}\n(Baseie o seu Diagnóstico OBRIGATORIAMENTE nestes dados acima).`;
-            
             if (resolveMotorMatematico) resolveMotorMatematico();
         } else {
-            if (rejectMotorMatematico) rejectMotorMatematico(new Error("Nenhum rosto detetado. A IA foi bloqueada."));
+            if (resolveMotorMatematico) resolveMotorMatematico(); // Avança mesmo se falhar a malha local para a IA julgar
         }
     });
 
-    // 🛑 ARMA SECRETA ANTI-TELA PRETA NO PDF
+    // O SCRIPT DE CAPTURA DO PDF ULTRA-COMPATÍVEL
     document.getElementById('btnSalvarPDF').addEventListener('click', () => {
         const elemento = document.getElementById('areaPdf');
         const nomeCliente = document.getElementById('nomeClienteDiag').value || "Cliente";
         
-        // 1. Força o ecrã ir lá para o topo! Mata o bug de tirar foto da área preta vazia.
         window.scrollTo(0, 0);
 
-        // 2. Transforma o Canvas Vivo numa Imagem Estática Morta (O telemóvel não engasga)
+        // CONVERSÃO DO CANVAS EM IMAGEM ESTÁTICA FLUIDA (O telemóvel renderiza sem perder o buffer)
         const canvas = document.getElementById('canvasMalha');
         const imgCanvasTemp = document.createElement('img');
         imgCanvasTemp.src = canvas.toDataURL('image/jpeg', 1.0);
@@ -220,10 +182,9 @@
         imgCanvasTemp.style.border = '1px solid #D4AF37';
         imgCanvasTemp.style.borderRadius = '8px';
 
-        canvas.style.display = 'none'; // Esconde o canvas original
-        canvas.parentNode.appendChild(imgCanvasTemp); // Coloca a foto estática no lugar
+        canvas.style.display = 'none';
+        canvas.parentNode.appendChild(imgCanvasTemp);
 
-        // 3. Força as cores de impressão e limpa o vidro fumê
         document.body.classList.add('imprimindo-pdf');
         elemento.style.backgroundColor = '#050505';
 
@@ -231,36 +192,30 @@
         btn.innerText = "Gerando PDF..."; btn.disabled = true;
 
         setTimeout(() => {
-            // Se for telemóvel, baixa a qualidade do render para não travar a memória (que causa a tela preta)
             const escalaPdf = window.innerWidth <= 768 ? 1.2 : 2;
 
             const opt = {
                 margin:       [0.4, 0.4, 0.4, 0.4], 
                 filename:     `Dossie_Visagista_${nomeCliente.replace(/\s+/g, '_')}.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
+                image:        { type: 'jpeg', quality: 0.95 },
                 html2canvas:  { 
                     scale: escalaPdf, 
                     useCORS: true, 
                     backgroundColor: '#050505',
-                    scrollY: 0, // CRÍTICO: Anula o bug de scroll no iOS/Android
+                    scrollY: 0,
                     windowY: 0
                 },
                 jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
             };
 
             html2pdf().set(opt).from(elemento).save().then(() => {
-                // Devolve a beleza ao site
                 btn.innerText = "Exportar PDF"; btn.disabled = false;
                 document.body.classList.remove('imprimindo-pdf'); 
                 elemento.style.backgroundColor = 'transparent';
-                
-                // Remove a foto estática e devolve o canvas
                 canvas.style.display = 'block';
                 const temp = document.getElementById('imgCanvasTemp');
                 if(temp) temp.remove();
-
             }).catch(err => {
-                console.error("Erro no PDF:", err);
                 btn.innerText = "Exportar PDF"; btn.disabled = false;
                 document.body.classList.remove('imprimindo-pdf');
                 elemento.style.backgroundColor = 'transparent';
@@ -338,7 +293,6 @@
         spinner.style.display = 'block'; statusTexto.style.display = 'block'; resultDiv.style.display = 'none';
         btn.disabled = true; btn.innerText = "A Processar..."; btn.style.opacity = "0.6";
 
-        matrizCalculada = "";
         resultadoLandmarksGlobais = null;
 
         try {
@@ -365,27 +319,22 @@
             const imgProcessada = new Image();
             await new Promise((resolve) => { imgProcessada.onload = resolve; imgProcessada.src = base64LimpoEReto; });
 
-            statusTexto.innerText = "A desenhar proporções arquitetónicas (Aguarde)...";
+            statusTexto.innerText = "Mapeando eixos biométricos locais...";
             
-            const bloqueioMatematico = new Promise((resolve, reject) => {
-                resolveMotorMatematico = resolve;
-                rejectMotorMatematico = reject;
-                setTimeout(() => { if (rejectMotorMatematico) reject(new Error("Erro de captura. A foto pode não estar nítida o suficiente.")); }, 15000); 
-            });
-
+            const bloqueioSincrono = new Promise((resolve) => { resolveMotorMatematico = resolve; });
             await faceMesh.send({ image: imgProcessada });
-            await bloqueioMatematico; 
+            await bloqueioSincrono; 
 
             resolveMotorMatematico = null;
-            rejectMotorMatematico = null;
 
-            statusTexto.innerText = "A analisar matriz na IA...";
+            statusTexto.innerText = "Enviando análise para o Motor Multimodal Clássico...";
             const apenasBase64 = base64LimpoEReto.split(',')[1];
 
             const res = await fetch('https://diagnostico-p10h.onrender.com/api/diagnostico', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${senha}` },
-                body: JSON.stringify({ imagemBase64: apenasBase64, mimeType: 'image/jpeg', nomeCliente: nome, matrizExtra: matrizCalculada })
+                // Enviamos apenas a foto limpa e reta. A IA usará o seu próprio "olho clínico" sem amarras textuais!
+                body: JSON.stringify({ imagemBase64: apenasBase64, mimeType: 'image/jpeg', nomeCliente: nome })
             });
 
             if(res.status === 401) { localStorage.removeItem('senha_atelie_diag'); window.location.reload(); return; }
@@ -408,7 +357,6 @@
         } catch (error) {
             alert(error.message);
             resolveMotorMatematico = null;
-            rejectMotorMatematico = null;
         } finally {
             spinner.style.display = 'none'; statusTexto.style.display = 'none';
             btn.disabled = false; btn.innerText = "Gerar Diagnóstico Estrutural"; btn.style.opacity = "1";
