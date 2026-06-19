@@ -72,7 +72,6 @@
         .spinner { display: none; width: 35px; height: 35px; border: 2px solid rgba(212, 175, 55, 0.1); border-top: 2px solid var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin: 35px auto 20px auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .status-pulse { font-size: 12px; color: var(--gold); text-align: center; margin-top: 10px; display: none; font-weight: 400; letter-spacing: 1px; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
         
         #telaLoginDiag { text-align: center; padding: 50px 40px; }
         #telaAppDiag { display: none; width: 100%; max-width: 650px; }
@@ -83,11 +82,20 @@
         .rodape-texto { color: #555; font-size: 10px; margin: 0; letter-spacing: 4px; text-transform: uppercase; font-weight: 300; }
         .rodape-destaque { color: var(--gold-dim); font-weight: 400; display: block; margin-top: 8px; letter-spacing: 2px;}
 
-        /* 🛡️ ESTILO IMPRESSÃO EXCLUSIVO SÓLIDO (Mata o preto do telemóvel) */
+        /* 🛡️ BRANQUEAMENTO DE IMPRESSÃO EXCLUSIVO (Mata o filtro escuro na foto) */
         body.imprimindo-pdf .painel { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; background: #050505 !important; box-shadow: none !important; border: none !important; }
         body.imprimindo-pdf .resultado-bloco { background-color: #111111 !important; border-left: 2px solid #D4AF37 !important; animation: none !important; opacity: 1 !important; transform: none !important; }
         body.imprimindo-pdf h3, body.imprimindo-pdf h4, body.imprimindo-pdf strong { color: #D4AF37 !important; }
         body.imprimindo-pdf p, body.imprimindo-pdf span { color: #d0d0d0 !important; }
+        
+        /* Força a imagem clonada a ignorar opacidades ou filtros herdados do telemóvel */
+        body.imprimindo-pdf #imgCanvasTemp {
+            opacity: 1 !important;
+            filter: none !important;
+            -webkit-filter: none !important;
+            mix-blend-mode: normal !important;
+            background: #000000 !important;
+        }
     </style>
 </head>
 <body>
@@ -132,11 +140,11 @@
                         </div>
                     </div>
 
-                    <div class="resultado-bloco"><h4>I. Proporções Anatômicas</h4><p id="resTercos"></p></div>
-                    <div class="resultado-bloco"><h4>II. Geometria e Linhas</h4><p id="resGeometria"></p></div>
-                    <div class="resultado-bloco"><h4>III. Identidade Estrutural</h4><p><strong>Formato Geométrico:</strong> <span id="resFormato" style="color: #fff;"></span></p></div>
+                    <div class="resultado-bloco"><h4>I. Mapeamento de Linhas Oculares e Mandibulares</h4><p id="resTercos"></p></div>
+                    <div class="resultado-bloco"><h4>II. Geometria e Linhas de Força</h4><p id="resGeometria"></p></div>
+                    <div class="resultado-bloco"><h4>III. Subclassificação Estrutural</h4><p><strong>Formato Validado:</strong> <span id="resFormato" style="color: #fff;"></span></p></div>
                     <div class="resultado-bloco"><h4>IV. Lei da Compensação</h4><p id="resCompensacao"></p></div>
-                    <div class="resultado-bloco"><h4>V. Engenharia Estratégica</h4><p id="resEngenharia"></p></div>
+                    <div class="resultado-bloco"><h4>V. Engenharia Estratégica de Corte e Cor</h4><p id="resEngenharia"></p></div>
                 </div>
 
                 <div class="botoes-acao">
@@ -159,26 +167,23 @@
 
     faceMesh.onResults(results => { 
         resultadoLandmarksGlobais = results; 
-        if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
-            if (resolveMotorMatematico) resolveMotorMatematico();
-        } else {
-            if (resolveMotorMatematico) resolveMotorMatematico(); // Avança mesmo se falhar a malha local para a IA julgar
-        }
+        if (resolveMotorMatematico) resolveMotorMatematico();
     });
 
-    // O SCRIPT DE CAPTURA DO PDF ULTRA-COMPATÍVEL
+    // O SCRIPT DE CAPTURA DO PDF ULTRA-COMPATÍVEL DE SUCESSO
     document.getElementById('btnSalvarPDF').addEventListener('click', () => {
         const elemento = document.getElementById('areaPdf');
         const nomeCliente = document.getElementById('nomeClienteDiag').value || "Cliente";
         
         window.scrollTo(0, 0);
 
-        // CONVERSÃO DO CANVAS EM IMAGEM ESTÁTICA FLUIDA (O telemóvel renderiza sem perder o buffer)
+        // 🌟 CORREÇÃO CIRÚRGICA: Exportamos como PNG (evita o canal alpha que gerava o filtro preto no iOS)
         const canvas = document.getElementById('canvasMalha');
         const imgCanvasTemp = document.createElement('img');
-        imgCanvasTemp.src = canvas.toDataURL('image/jpeg', 1.0);
+        imgCanvasTemp.src = canvas.toDataURL('image/png'); // Mudado de jpeg para png para travar a nitidez
         imgCanvasTemp.id = 'imgCanvasTemp';
         imgCanvasTemp.style.width = '100%';
+        imgCanvasTemp.style.display = 'block';
         imgCanvasTemp.style.border = '1px solid #D4AF37';
         imgCanvasTemp.style.borderRadius = '8px';
 
@@ -197,7 +202,7 @@
             const opt = {
                 margin:       [0.4, 0.4, 0.4, 0.4], 
                 filename:     `Dossie_Visagista_${nomeCliente.replace(/\s+/g, '_')}.pdf`,
-                image:        { type: 'jpeg', quality: 0.95 },
+                image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { 
                     scale: escalaPdf, 
                     useCORS: true, 
@@ -327,13 +332,12 @@
 
             resolveMotorMatematico = null;
 
-            statusTexto.innerText = "Enviando análise para o Motor Multimodal Clássico...";
+            statusTexto.innerText = "Analisando linhas estruturais na IA...";
             const apenasBase64 = base64LimpoEReto.split(',')[1];
 
             const res = await fetch('https://diagnostico-p10h.onrender.com/api/diagnostico', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${senha}` },
-                // Enviamos apenas a foto limpa e reta. A IA usará o seu próprio "olho clínico" sem amarras textuais!
                 body: JSON.stringify({ imagemBase64: apenasBase64, mimeType: 'image/jpeg', nomeCliente: nome })
             });
 
@@ -345,7 +349,7 @@
             
             renderizarMalhaDourada(imgProcessada);
 
-            document.getElementById('resTercos').innerText = diag.analise_tercos || "N/A";
+            document.getElementById('resTercos').innerText = diag.calibracao_metrica_inicial || "N/A";
             document.getElementById('resGeometria').innerText = diag.geometria_linhas || "N/A";
             document.getElementById('resFormato').innerText = diag.formato_final || "N/A";
             document.getElementById('resCompensacao').innerText = diag.lei_compensacao || "N/A";
