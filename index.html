@@ -84,7 +84,6 @@
         .spinner { display: none; width: 35px; height: 35px; border: 2px solid rgba(212, 175, 55, 0.1); border-top: 2px solid var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin: 35px auto 20px auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .status-pulse { font-size: 12px; color: var(--gold); text-align: center; margin-top: 10px; display: none; font-weight: 400; letter-spacing: 1px; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
         
         #telaLoginDiag { text-align: center; padding: 50px 40px; }
         #telaAppDiag { display: none; width: 100%; max-width: 650px; }
@@ -95,10 +94,9 @@
         .rodape-texto { color: #555; font-size: 10px; margin: 0; letter-spacing: 4px; text-transform: uppercase; font-weight: 300; }
         .rodape-destaque { color: var(--gold-dim); font-weight: 400; display: block; margin-top: 8px; letter-spacing: 2px;}
 
-        body.imprimindo-pdf .painel { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; background: #0a0a0a !important; box-shadow: none !important; border: none !important; }
-        body.imprimindo-pdf #areaPdf { background-color: #0a0a0a !important; }
-        body.imprimindo-pdf .resultado-bloco { background-color: #151515 !important; border-left: 2px solid #D4AF37 !important; animation: none !important; opacity: 1 !important; transform: none !important; }
-        body.imprimindo-pdf .container-canvas { box-shadow: none !important; border: 1px solid #D4AF37 !important; }
+        /* MODO DE IMPRESSÃO CEGO (Esconde tudo que causa o Erro Preto) */
+        body.imprimindo-pdf .painel { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; background: #050505 !important; box-shadow: none !important; border: none !important; }
+        body.imprimindo-pdf .resultado-bloco { background-color: #111111 !important; border-left: 2px solid #D4AF37 !important; animation: none !important; opacity: 1 !important; transform: none !important; }
         body.imprimindo-pdf h3, body.imprimindo-pdf h4, body.imprimindo-pdf strong { color: #D4AF37 !important; }
         body.imprimindo-pdf p, body.imprimindo-pdf span { color: #d0d0d0 !important; }
     </style>
@@ -137,7 +135,7 @@
             
             <div id="resultadoDiag" style="display: none; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.05);">
                 <div id="areaPdf">
-                    <h3 style="text-align: center; margin-bottom: 25px; margin-top: 10px; font-size: 18px; text-transform: uppercase; letter-spacing: 2px;">Prescrição Visagista</h3>
+                    <h3 style="text-align: center; margin-bottom: 25px; margin-top: 10px; font-size: 18px; text-transform: uppercase; letter-spacing: 2px; color: #D4AF37;">Prescrição Visagista</h3>
                     
                     <div class="wrapper-biometria">
                         <div class="container-canvas">
@@ -147,7 +145,7 @@
 
                     <div class="resultado-bloco"><h4>I. Proporções Anatômicas</h4><p id="resTercos"></p></div>
                     <div class="resultado-bloco"><h4>II. Geometria e Linhas</h4><p id="resGeometria"></p></div>
-                    <div class="resultado-bloco"><h4>III. Identidade Estrutural</h4><p><strong>Formato Geométrico:</strong> <span id="resFormato"></span></p></div>
+                    <div class="resultado-bloco"><h4>III. Identidade Estrutural</h4><p><strong>Formato Geométrico:</strong> <span id="resFormato" style="color: #fff;"></span></p></div>
                     <div class="resultado-bloco"><h4>IV. Lei da Compensação</h4><p id="resCompensacao"></p></div>
                     <div class="resultado-bloco"><h4>V. Engenharia Estratégica</h4><p id="resEngenharia"></p></div>
                 </div>
@@ -169,14 +167,11 @@
 
     let resultadoLandmarksGlobais = null;
     let matrizCalculada = ""; 
-    
-    // Novas variáveis para Ponto de Controle (Promessas sincronizadas)
     let resolveMotorMatematico = null;
     let rejectMotorMatematico = null;
 
     faceMesh.onResults(results => { 
         resultadoLandmarksGlobais = results; 
-        
         if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
             const pts = results.multiFaceLandmarks[0];
             const calcDist = (p1, p2) => Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
@@ -202,48 +197,76 @@
 
             matrizCalculada = `MATRIZ GEOMÉTRICA EXATA CALCULADA PELO APLICATIVO:\n1. Proporção Vertical: ${proporcaoDesc}\n2. Equilíbrio Horizontal: ${largurasDesc}\n(Baseie o seu Diagnóstico OBRIGATORIAMENTE nestes dados acima).`;
             
-            // O Paquímetro grita: Terminei a nova foto! Pode enviar para a Inteligência!
-            if (resolveMotorMatematico) {
-                resolveMotorMatematico();
-            }
+            if (resolveMotorMatematico) resolveMotorMatematico();
         } else {
-            // Se enviar foto do chão ou sem rosto
-            if (rejectMotorMatematico) {
-                rejectMotorMatematico(new Error("Nenhum rosto claro detectado. A IA foi bloqueada por segurança. Tente uma foto melhor iluminada."));
-            }
+            if (rejectMotorMatematico) rejectMotorMatematico(new Error("Nenhum rosto detetado. A IA foi bloqueada."));
         }
     });
 
+    // 🛑 ARMA SECRETA ANTI-TELA PRETA NO PDF
     document.getElementById('btnSalvarPDF').addEventListener('click', () => {
         const elemento = document.getElementById('areaPdf');
         const nomeCliente = document.getElementById('nomeClienteDiag').value || "Cliente";
         
+        // 1. Força o ecrã ir lá para o topo! Mata o bug de tirar foto da área preta vazia.
+        window.scrollTo(0, 0);
+
+        // 2. Transforma o Canvas Vivo numa Imagem Estática Morta (O telemóvel não engasga)
+        const canvas = document.getElementById('canvasMalha');
+        const imgCanvasTemp = document.createElement('img');
+        imgCanvasTemp.src = canvas.toDataURL('image/jpeg', 1.0);
+        imgCanvasTemp.id = 'imgCanvasTemp';
+        imgCanvasTemp.style.width = '100%';
+        imgCanvasTemp.style.border = '1px solid #D4AF37';
+        imgCanvasTemp.style.borderRadius = '8px';
+
+        canvas.style.display = 'none'; // Esconde o canvas original
+        canvas.parentNode.appendChild(imgCanvasTemp); // Coloca a foto estática no lugar
+
+        // 3. Força as cores de impressão e limpa o vidro fumê
         document.body.classList.add('imprimindo-pdf');
+        elemento.style.backgroundColor = '#050505';
 
         const btn = document.getElementById('btnSalvarPDF');
         btn.innerText = "Gerando PDF..."; btn.disabled = true;
 
         setTimeout(() => {
+            // Se for telemóvel, baixa a qualidade do render para não travar a memória (que causa a tela preta)
+            const escalaPdf = window.innerWidth <= 768 ? 1.2 : 2;
+
             const opt = {
                 margin:       [0.4, 0.4, 0.4, 0.4], 
                 filename:     `Dossie_Visagista_${nomeCliente.replace(/\s+/g, '_')}.pdf`,
-                image:        { type: 'jpeg', quality: 1 },
+                image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { 
-                    scale: 2, 
+                    scale: escalaPdf, 
                     useCORS: true, 
-                    backgroundColor: '#0a0a0a',
-                    windowWidth: document.documentElement.offsetWidth 
+                    backgroundColor: '#050505',
+                    scrollY: 0, // CRÍTICO: Anula o bug de scroll no iOS/Android
+                    windowY: 0
                 },
                 jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
             };
 
             html2pdf().set(opt).from(elemento).save().then(() => {
+                // Devolve a beleza ao site
                 btn.innerText = "Exportar PDF"; btn.disabled = false;
                 document.body.classList.remove('imprimindo-pdf'); 
+                elemento.style.backgroundColor = 'transparent';
+                
+                // Remove a foto estática e devolve o canvas
+                canvas.style.display = 'block';
+                const temp = document.getElementById('imgCanvasTemp');
+                if(temp) temp.remove();
+
             }).catch(err => {
                 console.error("Erro no PDF:", err);
-                document.body.classList.remove('imprimindo-pdf');
                 btn.innerText = "Exportar PDF"; btn.disabled = false;
+                document.body.classList.remove('imprimindo-pdf');
+                elemento.style.backgroundColor = 'transparent';
+                canvas.style.display = 'block';
+                const temp = document.getElementById('imgCanvasTemp');
+                if(temp) temp.remove();
             });
         }, 800); 
     });
@@ -315,7 +338,6 @@
         spinner.style.display = 'block'; statusTexto.style.display = 'block'; resultDiv.style.display = 'none';
         btn.disabled = true; btn.innerText = "A Processar..."; btn.style.opacity = "0.6";
 
-        // LAVAGEM CEREBRAL: Apaga a memória da cliente antiga antes de começar
         matrizCalculada = "";
         resultadoLandmarksGlobais = null;
 
@@ -345,21 +367,15 @@
 
             statusTexto.innerText = "A desenhar proporções arquitetónicas (Aguarde)...";
             
-            // O BLOQUEIO DE SEGURANÇA: Congela o código até o MediaPipe terminar 100%
             const bloqueioMatematico = new Promise((resolve, reject) => {
                 resolveMotorMatematico = resolve;
                 rejectMotorMatematico = reject;
-                
-                // Se o telemóvel for tão lento que demore mais de 10 segundos, ele avisa para não travar
-                setTimeout(() => {
-                    if (rejectMotorMatematico) reject(new Error("O processamento da foto está a demorar muito. A foto pode não estar nítida o suficiente."));
-                }, 15000); 
+                setTimeout(() => { if (rejectMotorMatematico) reject(new Error("Erro de captura. A foto pode não estar nítida o suficiente.")); }, 15000); 
             });
 
             await faceMesh.send({ image: imgProcessada });
-            await bloqueioMatematico; // Só avança desta linha quando a nova matriz estiver 100% pronta!
+            await bloqueioMatematico; 
 
-            // Liberta as promessas de controlo
             resolveMotorMatematico = null;
             rejectMotorMatematico = null;
 
@@ -391,7 +407,6 @@
 
         } catch (error) {
             alert(error.message);
-            // Limpa as variáveis se der erro para não ficar preso
             resolveMotorMatematico = null;
             rejectMotorMatematico = null;
         } finally {
